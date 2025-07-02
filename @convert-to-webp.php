@@ -4,8 +4,9 @@ $directory = __DIR__;
 $quality = 80; // Adjust WebP quality here
 
 $allowedDirs = [
-    realpath($directory . '/adverts'),
-    realpath($directory . '/articles')
+    // realpath($directory . '/adverts'),
+    // realpath($directory . '/articles'),
+    // realpath($directory . '/assets/img/front-cover')
 ];
 
 $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
