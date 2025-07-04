@@ -14,6 +14,7 @@
             'X-UA-Compatible'   => 'ie=edge',
             'description'       => 'Billy Porter reflects on Pride, sharing the bitter and the sweet moments, and discusses his stunning new play in this exclusive feature.',
             'author'            => 'George Beresford Design',
+            'cache-control'     => 'public, max-age=31536000, immutable',
         ],
         'favicons' => [
             'favicon'           => '/assets/seo/favicon.ico',
