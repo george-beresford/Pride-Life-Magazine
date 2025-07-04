@@ -185,12 +185,14 @@
             if (!menuId) return;
             const nav = document.getElementById(menuId);
             if (!nav) return;
-            if (nav.classList.contains('close')) {
-                nav.classList.remove('close');
-                trigger.dataset.action = 'close';
-            } else {
+            if (nav.classList.contains('open')) {
+                nav.classList.remove('open');
                 nav.classList.add('close');
                 trigger.dataset.action = 'open';
+            } else if (nav.classList.contains('close')) {
+                nav.classList.remove('close');
+                nav.classList.add('open');
+                trigger.dataset.action = 'close';
             }
         }
 
@@ -207,7 +209,6 @@
                         if (menuTrigger && menuTrigger.dataset.action === 'close') {
                             // Scroll to section and center nav active item first
                             setTimeout(() => {
-                                // Optionally, you can update active class here if needed
                                 setTimeout(() => {
                                     toggleMenu(menuTrigger);
                                 }, 500); // 500ms delay before closing
