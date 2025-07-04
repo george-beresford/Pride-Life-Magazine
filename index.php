@@ -2,8 +2,66 @@
     $config['title']['page_title'] = "The Pride Issue - The Bitter and the Sweet (ISSUE 38 SUMMER 2025)";
     require_once(__DIR__.'/includes/@site.config.php');
     require_once(__DIR__.'/includes/@functions.php');
+
+
+    
+    $tracking_links = array(
+        // 'from_GET_VAR' => 'to_FULL_LINK',
+        'sadiq-khan'    => 'https://magazine.pridelifeglobal.com/issue38/#message-from-the-mayor-of-london',
+        'billy-porter'  => 'https://magazine.pridelifeglobal.com/issue38/#the-bitter-and-the-sweet',
+        'lady-phyll'    => 'https://magazine.pridelifeglobal.com/issue38/#black-and-proud',
+        'kitty'         => 'https://magazine.pridelifeglobal.com/issue38/#kitty-power',
+        'emrhys-cooper' => 'https://magazine.pridelifeglobal.com/issue38/#proud-at-last',
+
+        'amsterdam'   => 'https://magazine.pridelifeglobal.com/issue38/#amsterdam-a-united-pride-for-the-world',
+        'dutch'   => 'https://magazine.pridelifeglobal.com/issue38/#world-pride-goes-dutch',
+
+        'advocates' => 'https://magazine.pridelifeglobal.com/issue38/#pride-inclusion-advocates',
+        /** 
+         * ALSO SEE ADVOCATES SECTION,
+         * FOR AUTO-ORDERING
+        **/
+        'rahul-upadhyay'  => 'https://magazine.pridelifeglobal.com/issue38/?advocate=rahul-upadhyay',
+        'pedro-ivo-oliveira' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=pedro-ivo-oliveira',
+        'adelle-barker' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=adelle-barker',
+        'diogo-vieira-da-silva' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=diogo-vieira-da-silva',
+        'drew-hubbard' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=drew-hubbard',
+        'naz-mir' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=naz-mir',
+        'lexie-shaibu-lenoir' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=lexie-shaibu-lenoir',
+        'zac-thompson-hunt' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=zac-thompson-hunt',
+        'dan-porter' => 'https://magazine.pridelifeglobal.com/issue38/?advocate=dan-porter',
+    );
+    /*
+        Short links: 
+        
+        http://mag.pridelife.com/issue38/?to=sadiq-khan
+        http://mag.pridelife.com/issue38/?to=billy-porter
+        http://mag.pridelife.com/issue38/?to=lady-phyll
+        http://mag.pridelife.com/issue38/?to=kitty
+        http://mag.pridelife.com/issue38/?to=emrhys-cooper
+
+    */
+    if (isset($_GET['to']) && array_key_exists($_GET['to'], $tracking_links)) {
+        header("Location: " . $tracking_links[$_GET['to']]);
+        exit;
+    }
 ?>
 <?php require __DIR__.'/includes/header.php'; ?>
+
+    <?php
+        // If ?advocate=... is set, inject a script to scroll to the matching #advocate link
+        if (isset($_GET['advocate']) && preg_match('/^[a-z0-9\-]+$/', $_GET['advocate'])) {
+            $anchor = htmlspecialchars($_GET['advocate'], ENT_QUOTES, 'UTF-8');
+            echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var el = document.getElementById('{$anchor}');
+                    if (el) {
+                        el.scrollIntoView({behavior: 'smooth', block: 'start'});
+                    }
+                });
+            </script>";
+        }
+    ?>
 <!-- <main class="scroll-snap-y"> -->
     <!-- FRONT COVER: BILLY PORTER -->
     <section class="hero hero-fullscreen" id="front-cover">
@@ -102,7 +160,8 @@
                 'content' => '#I’m thrilled to welcome you to Pride in London 2025 – one of the most vibrant, inclusive and affirming celebrations in the world.
                 London stands proudly at the forefront of championing LGBTQI+ rights. Our city is home to people of every background, identity and orientation – and it’s this diversity that makes London truly great. Pride is a moment to celebrate that greatness and stand together in solidarity as we send a message to the world that in London you are free to be who you are and to love who you love.
                 From across the UK and beyond, over a million people join us each year to take part in an all-inclusive, joyous celebration of love, equality and solidarity. It’s an unforgettable day and a vital declaration of support for LGBTQI+ people everywhere.',
-                'image' => get_site_url() . '/articles/mayor-of-london/headshot.webp',
+                'image' => get_site_url() . '/articles/mayor-of-london/Sadiq-Khan.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => 'PICTURES © GREATER LONDON AUTHORITY',
             ]); ?>
@@ -151,7 +210,8 @@
                 The road ahead remains long, but we walk it together – with pride, with purpose, and with the unshakeable knowledge that our resistance and our joy are equally powerful forces for change.
                 With solidarity and celebration,
                 #<strong>Christopher Joell-Deshields<br />CEO of Pride in London</strong>',
-                'image' => get_site_url() . '/articles/welcome-to-pride-london/Christopher-Joell-Deshields.webp',
+                'image' => get_site_url() . '/articles/welcome-to-pride-london/Christopher-Joell-Deshields-New.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => '',
             ]); ?>
@@ -165,8 +225,8 @@
                 'title' => 'DON’T LET THE PARADE PASS BY!',
                 'content' => 'Kicking off at 12:00 on 5 July, the parade runs from Hyde Park Corner, through Piccadilly Circus, down Haymarket and along Pall Mall to Trafalgar Square, culminating at Whitehall Place. Attendees can watch from any of the designated public spaces along the route.
                 The parade will see around 500 groups made up from LGBTQ+ Community Groups, LGBTQ+ businesses, and partners, forming together to make our total over 40,000 participants.
-                The parade is free to watch!',
-                'image' => get_site_url() . '/articles/london-pride-map-2025/map.webp',
+                #The parade is free to watch!',
+                'image' => get_site_url() . '/articles/london-pride-map-2025/map.png',
                 'image_alt' => 'Pride in London (https://prideinlondon.org/)',
                 'image_credit' => '© Pride in London (prideinlondon.org)',
             ]); ?>
@@ -202,7 +262,7 @@
             <?php echo create_layout('full-media', $args = [
                 'title' => 'Pride in London 2025 Map',
                 'content' => '',
-                'image' => get_site_url() . '/articles/london-pride-map-2025/map.webp',
+                'image' => get_site_url() . '/articles/london-pride-map-2025/map.png',
                 'image_alt' => 'Pride in London (https://prideinlondon.org/)',
                 'image_credit' => '© Pride in London (prideinlondon.org)',
             ]); ?>
@@ -394,8 +454,7 @@
             ]); ?>
             <?php echo create_layout('split-media-reverse', $args = [
                 'title' => '',
-                'content' => 'Audience members will be able to donate through various means whilst in the venues – supporting Pride in London and their wider
-                community partnerships in celebrating LGBTQ+ identities through culture, creativity, and collective pride. The partnership reaffirms ATG’s belief in the power of live performance to bring people together, foster understanding, and amplify voices that deserve to be heard.
+                'content' => 'Audience members will be able to donate through various means whilst in the venues – supporting Pride in London and their wider community partnerships in celebrating LGBTQ+ identities through culture, creativity, and collective pride. The partnership reaffirms ATG’s belief in the power of live performance to bring people together, foster understanding, and amplify voices that deserve to be heard.
                 It’s a true world-first, with London becoming the first city of the world where a major theatre group has partnered with a major Pride organisation to dedicate an entire month to visibly supporting the LGBTQ+ community. As Pride in London’s Director of Partnerships & Growth Dee Llewellyn says: “It shows what’s possible when culture and community come together with purpose, and we hope it sets a new global benchmark for solidarity and impact.”',
                 'image' => get_site_url() . '/articles/pride-theatre/stranger-things-the-first-shadow.webp',
                 'image_alt' => 'PICTURES: NO SWAN SO FINE, CELSO',
@@ -552,6 +611,7 @@
                 'content' => 'FRESH FROM HIS APPEARANCE IN CABARET, <strong>BILLY PORTER</strong> IS DIRECTING A MAJOR NEW DRAMA ABOUT A QUEER INTERRACIAL COUPLE SET DURING YEARS OF CIVIL UNREST.
                 HE TALKS TO <strong>CARY GEE</strong> ABOUT RACE, BALLROOM CULTURE, PRIDE, AND CHOOSING JOY.',
                 'image' => get_site_url() . '/articles/billy-porter/cover.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: BILLY PORTER BY MEREDITH TRUAX',
                 'image_credit' => 'PICTURE: BILLY PORTER BY MEREDITH TRUAX',
             ], "accented"); ?>
@@ -578,6 +638,7 @@
                 #WAS BILLY NOT TEMPTED BY THE PART HIMSELF?
                 “No. I’m too old!”',
                 'image' => get_site_url() . '/articles/billy-porter/Pose-01.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: BILLY PORTER IN POSE: FX STUDIOS',
                 'image_credit' => 'PICTURE: BILLY PORTER IN POSE: FX STUDIOS',
             ]); ?>
@@ -617,6 +678,7 @@
                 #POSE IS SET IN THE BALL SCENE OF LATE 1980S NEW YORK CITY. AN LGBTQ+ SUBCULTURE THAT INSPIRED, AMONG OTHER CRAZES, VOGUEING. WAS THIS A SCENE THAT BILLY WAS INVOLVED WITH HIMSELF?
                 “I was adjacent to the Ball scene. I was blessed to come to New York to be in the original cast of Miss Saigon on Broadway. The Ball culture and the movie Paris is Burning came out right when I moved to New York. That’s my era. It was the first time I had seen anyone on screen that looked like me. A queer Black man. It changed everything for me. It was crazy. Wild.”',
                 'image' => get_site_url() . '/articles/billy-porter/Pose-02.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: BILLY PORTER IN POSE: FX STUDIOS',
                 'image_credit' => 'PICTURE: BILLY PORTER IN POSE: FX STUDIOS',
             ]); ?>
@@ -630,6 +692,7 @@
                 #WHAT WAS IT LIKE WALKING ONTO SET? DID HE MANAGE NOT TO TRIP OVER ANYONE’S OSCAR?
                 “Oh, my God! They were so sweet to me. The night before my shoot I had been to the Grammys to present the best RnB album. And so they had seen me on television the night before. After the Grammys I drove the five hours to set. I walked on and they were all mothering me immediately. ‘OMG. You were out late last night. You look beautiful.’ I said, ‘I get to work with you! I’m fine. I’ll miss some sleep.’”',
                 'image' => get_site_url() . '/articles/billy-porter/Caberet-01.webp',
+                'has_face' => true,
                 'image_alt' => 'BILLY PORTER IN CABARET. PICTURE: MARC BRENNER',
                 'image_credit' => 'BILLY PORTER IN CABARET. PICTURE: MARC BRENNER',
             ]); ?>
@@ -644,6 +707,7 @@
                 #DOES BILLY THINK LGBTQ+ RIGHTS HAVE SLIPPED BACKWARDS AT ALL WITH THE REELECTION OF TRUMP TO THE PRESIDENCY?
                 “I think that in America we are in a season of ‘Yes’ or ‘No’. I choose Joy. I choose to believe in the human spirit. I choose to believe in humanity. It’s dark right now. We’ll see. We have to be present. We have to be strong. We have to be open and ready for whatever is coming.”',
                 'image' => get_site_url() . '/articles/billy-porter/Caberet-02.webp',
+                'has_face' => true,
                 'image_alt' => 'BILLY PORTER IN CABARET. PICTURE: MARC BRENNER',
                 'image_credit' => 'BILLY PORTER IN CABARET. PICTURE: MARC BRENNER',
             ]); ?>
@@ -671,6 +735,7 @@
                 This Bitter Earth, directed by Billy Porter, is at the Soho Theatre until 26 July
                 Go to: www.sohotheatre.com',
                 'image' => get_site_url() . '/articles/billy-porter/New-York-Pride-01.webp',
+                'has_face' => true,
                 'image_alt' => 'CC NEW YORK PRIDE 50',
                 'image_credit' => 'CC NEW YORK PRIDE 50',
             ]); ?>
@@ -739,8 +804,10 @@
         <div class="scroll-snap-x">
             <?php echo create_layout('split-media-reverse', $args = [
                 'title' => 'BLACK AND PROUD',
-                'content' => 'UK BLACK PRIDE IS THE WORLD’S LARGEST FREE PRIDE EVENT FOR LGBTQIA+, BLACK AND POC PEOPLE AND THIS YEAR IS CELEBRATING ITS TWENTIETH ANNIVERSARY. <strong>NIGEL ROBINSON</strong> TALKS TO ITS CO-FOUNDER AND CHIEF EXECUTIVE, HUMAN RIGHTS ADVOCATE <strong>PHYLL OPOKU-GYIMAH</strong> (LADY PHYLL), ABOUT WHY BLACK PRIDE MATTERS, ESPECIALLY TODAY',
+                'content' => 'UK BLACK PRIDE IS THE WORLD’S LARGEST FREE PRIDE EVENT FOR LGBTQIA+, BLACK AND POC PEOPLE AND THIS YEAR IS CELEBRATING ITS TWENTIETH ANNIVERSARY.
+                <strong>NIGEL ROBINSON</strong> TALKS TO ITS CO-FOUNDER AND CHIEF EXECUTIVE, HUMAN RIGHTS ADVOCATE <strong>PHYLL OPOKU-GYIMAH</strong> (LADY PHYLL), ABOUT WHY BLACK PRIDE MATTERS, ESPECIALLY TODAY',
                 'image' => get_site_url() . '/articles/lady-phyll/cover.webp',
+                'has_face' => true,
                 'image_alt' => 'PHYLL OPOKU-GYIMAH (LADY PHYLL), CO-FOUNDER AND CHIEF EXECUTIVE OF UK BLACK PRIDE',
                 'image_credit' => 'PHYLL OPOKU-GYIMAH (LADY PHYLL), CO-FOUNDER AND CHIEF EXECUTIVE OF UK BLACK PRIDE',
             ], "accented"); ?>
@@ -784,8 +851,14 @@
                 'content' => '#LADY PHYLL HAS RECEIVED MANY AWARDS IN RECOGNITION OF HER HUMAN RIGHTS WORK. SHE HAS FEATURED IN MANY PINK AND PRIDE LISTS, AND ONLY RECENTLY WAS NAMED ONE OF THE 100 GREAT BLACK BRITONS. YET IN 2016 SHE REFUSED AN MBE IN THE NEW YEAR HONOURS LIST.
                 #SHE LAUGHS, AND SAYS SHE KNEW I WAS GOING TO ASK THAT QUESTION.
                 “Apart from being a trade unionist I also led an international human rights charity (the Kaleidoscope Trust). My work has always been about social justice and human rights and working with partners around a world where we know that 66 countries criminalise LGBTQIA+ people. The fact that the MBE has the word 
-                ‘Empire’ in it is a bit toxic and has a legacy that has been very harmful. I couldn’t really accept anything that elevates itself over the people I set out to serve. There has been no real apology or acknowledgement or reimbursement or reparation for enslavement and slavery and the sodomy laws that were left there from the colonial era laws. I wouldn’t want to subscribe to something that doesn’t align with my values.” 
-                #BACK TO BLACK PRIDE – WHAT CAN WE EXPECT? AND WHAT ADVICE WOULD SHE GIVE PEOPLE ATTENDING FOR THE FIRST TIME?
+                ‘Empire’ in it is a bit toxic and has a legacy that has been very harmful. I couldn’t really accept anything that elevates itself over the people I set out to serve. There has been no real apology or acknowledgement or reimbursement or reparation for enslavement and slavery and the sodomy laws that were left there from the colonial era laws. I wouldn’t want to subscribe to something that doesn’t align with my values.”',
+                // 'image' => get_site_url() . '/articles/lady-phyll/black-pride-team.webp',
+                // 'image_alt' => 'LADY PHYLL AND THE UK BLACK PRIDE TEAM',
+                // 'image_alt' => 'LADY PHYLL AND THE UK BLACK PRIDE TEAM',
+            ]); ?>
+            <?php echo create_layout('split-editorial', $args = [
+                'title' => '',
+                'content' => '#BACK TO BLACK PRIDE – WHAT CAN WE EXPECT? AND WHAT ADVICE WOULD SHE GIVE PEOPLE ATTENDING FOR THE FIRST TIME?
                 “We’ve got a main stage with lots of acts and artists and DJs from our community. There’s a dance tent and a youth and family area. There’s also an interfaith chaplaincy and a space to talk about being queer and reconciling religion, faith and belief. There will be over 100 exhibitors from corporate to commercial brands and from NGOs to grass-roots organisations — and the greatest food you could possibly imagine! 
                 “And, of course, safety. We need to make sure that everyone that comes to the free event in the park feels safe and is able to enjoy themself unapologetically .
                 “For someone coming by themself for the first time they can always email and reach out to us. You might even want to volunteer because you’re by yourself and you can support UK Black Pride in that way . Or we can buddy people up with others. The moment you enter that space you are never alone because we all have this common purpose of celebrating our unique minds, spirits and bodies, and occupying our own space . 
@@ -1100,6 +1173,7 @@
                 'title' => 'PROUD AT LAST',
                 'content' => 'FOR YEARS ACCLAIMED ACTOR, DIRECTOR AND DANCER <strong>EMRHYS COOPER</strong> STRUGGLED WITH HIS SEXUALITY. HE TALKS TO <strong>NIGEL ROBINSON</strong> ABOUT BULLIES AND BALLET, VAMPIRES AND CORONATION STREET AND BEING GAY IN HOLLYWOOD',
                 'image' => get_site_url() . '/articles/emrhys-cooper/cover.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: DAN COLLINS',
                 'image_credit' => 'PICTURE: DAN COLLINS',
             ], "accented"); ?>
@@ -1120,7 +1194,8 @@
                 'title' => '“I created a persona that wasn’t me to survive and to protect myself”',
                 'content' => '“I was getting bullied, sometimes physically, so I created a persona that wasn’t me to survive and to protect myself. For many years I lived a lie. I believed I could pull it off being straight. I had girlfriends and was doing pretty well as a dancer professionally but I was just miserable. 
                 “So at the age of 23 I decided to go to LA. I told everyone it was for my career but it was really to explore my sexuality. It was so I could be free. 
-                “But in LA the cracks started to appear more and more. I couldn’t live the lie any more. So I came out to one friend and then another and started therapy. It’s been a long journey and it’s only in the last few years I’m finally feeling comfortable and proud with who I am. For so many years it was a dirty horrible secret of shame and guilt and judgment. I grew up hearing about people dying of AIDS and being lonely. On television gay characters were being depicted as either the clown or the drug addict which just reinforced what I was being told by my peers at school.',
+                “But in LA the cracks started to appear more and more. I couldn’t live the lie any more. So I came out to one friend and then another and started therapy. It’s been a long journey and it’s only in the last few years I’m finally feeling comfortable and proud with who I am.
+                For so many years it was a dirty horrible secret of shame and guilt and judgment. I grew up hearing about people dying of AIDS and being lonely. On television gay characters were being depicted as either the clown or the drug addict which just reinforced what I was being told by my peers at school.',
                 // 'image' => get_site_url() . '/articles/emrhys-cooper/cover.webp',
                 // 'image_alt' => 'PICTURE: DAN COLLINS',
                 // 'image_credit' => 'PICTURE: DAN COLLINS',
@@ -1175,13 +1250,15 @@
                 “I did a short film back in 2018 called Trophy Boy about a kept boy/ sugar daddy relationship and the truth behind the lies of social media. 
                 “It was a proof of concept for a Trophy Boy series I want to do, following four social media influencers and how they really make money from the oldest profession in the world through the lens of Only Fans and social media. I wanted to make a truthful, honest, irreverent salacious sexy show about real life. We’re hoping to go into production with that”.',
                 'image' => get_site_url() . '/articles/emrhys-cooper/tony-duran.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: TONY DURAN',
                 'image_alt' => 'PICTURE: TONY DURAN',
             ]); ?>
             <?php echo create_layout('split-editorial', $args = [
                 'title' => '“It all comes down to passion in the story I’m telling”',
                 'content' => '#ACTING, DIRECTING, DANCING – WHICH IS EMRHYS’ FAVOURITE?
-                “The medium really doesn’t matter. To me it all comes down to passion in the story I’m telling and if it’s going to touch and inspire people. I’ve had amazing experiences on stage and on screen but I miss dancing. I haven’t danced for a while and once a dancer always a dancer. I spent 20 years of my life five days a week dancing: that’s part of who I am. Dancing gave me resilience and discipline and a good work ethic. People think you can just show up in Hollywood and wait on a corner to be discovered; that’s a myth: its hard work and you have to work harder than anyone else if you want to make headway in this industry.”',
+                “The medium really doesn’t matter. To me it all comes down to passion in the story I’m telling and if it’s going to touch and inspire people. I’ve had amazing experiences on stage and on screen but I miss dancing. I haven’t danced for a while and once a dancer always a dancer.
+                I spent 20 years of my life five days a week dancing: that’s part of who I am. Dancing gave me resilience and discipline and a good work ethic. People think you can just show up in Hollywood and wait on a corner to be discovered; that’s a myth: its hard work and you have to work harder than anyone else if you want to make headway in this industry.”',
                 // 'image' => get_site_url() . '/articles/emrhys-cooper/tony-duran.webp',
                 // 'image_alt' => 'PICTURE: TONY DURAN',
                 // 'image_credit' => 'PICTURE: TONY DURAN',
@@ -1360,498 +1437,58 @@
     <!-- Pride Life Global - Advocates Feature -->
     <section style="--background: var(--lightgrey); --accent: var(--pride-orange); --color: var(--black);">
         <div class="scroll-snap-x">
-            <?php echo create_layout('background-media', $args = [
-                'title' => 'Advocates',
-                'content' => '',
-                'image' => get_site_url() . '/articles/advocates/cover.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
+            <?php
+            // List of all advocate files
+            $advocate_files = [
+                'cover.php',
+                'rahul-upadhyay.php',
+                'pedro-ivo-oliveira.php',
+                'adelle-barker.php',
+                'diogo-vieira-da-silva.php',
+                'drew-hubbard.php',
+                'naz-mir.php',
+                'lexie-shaibu-lenoir.php',
+                'zac-thompson-hunt.php',
+                'dan-porter.php',
+            ];
 
+            // Get the 'to' param if set and is a tracked advocate
+            $advocate = isset($_GET['advocate']) ? $_GET['advocate'] : null;
+            $tracked = [
+                'rahul-upadhyay',
+                'pedro-ivo-oliveira',
+                'adelle-barker',
+                'diogo-vieira-da-silva',
+                'drew-hubbard',
+                'naz-mir',
+                'lexie-shaibu-lenoir',
+                'zac-thompson-hunt',
+                'dan-porter',
+            ];
 
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'RAHUL UPADHYAY',
-                'content' => '#RAHUL UPADHYAY IS A QUEER RIGHTS ACTIVIST, CO-PRESIDENT OF INTERPRIDE AND THE FOUNDER OF GANDHINAGAR QUEER PRIDE
-                (They/Them)',
-                'image' => get_site_url() . '/articles/advocates/rahul-upadhyay.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                I’m Rahul Upadhyay — a queer rights activist, community organiser, and one of the youngest leaders in the global Pride movement. I’ve been working on LGBTQIA+ issues since the age of 22, and over the years, my activism has taken many forms: rescuing queer individuals from unsafe households, organising city and national Pride events, conducting hundreds of gender-sensitisation workshops with schools, colleges, local authorities, and creating safe spaces for families of queer people — something still rare in India. 
-                Professionally, I’ve had the privilege of working with some of India’s premier educational institutions, including Ashoka University and Indian Institute of Technology Gandhinagar, where I’ve led alumni engagement and community-building efforts. I’ve consistently integrated inclusion, storytelling, and empowerment into every role I’ve taken on. 
-                On the international front, I currently serve as the Co-President of InterPride — the global network that supports Pride organisers worldwide — making me the youngest and the first Indian and South Asian to hold this role. I also lead the Gandhinagar Queer Pride Foundation, which I founded to push back against silence and stigma in Gujarat state. 
-                Through all these roles, my focus has been clear: building inclusive ecosystems, whether within institutions, on the streets, or across borders — to make this world a little more just, a little more livable, and a lot more loving for LGBTQIA+ people.',
-                'image' => get_site_url() . '/articles/advocates/rahul-upadhyay.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“WE MUST DEMAND POLICIES THAT PROTECT, EMPOWER, AND AFFIRM QUEER LIVES”',
-                'content' => '#IN 2019, YOU FOUNDED GANDHINAGAR QUEER PRIDE. WHY DID YOU FEEL A NEED TO FOUND QUEER PRIDE? 
-                Gandhinagar Queer Pride was born out of both frustration and hope. In 2018-2019, I was a young queer person navigating life in Gujarat — a state known for its deep-rooted conservatism and as the home of India’s current political leadership, which has often been openly hostile to LGBTQIA+ rights. There was no Pride parade, no visible queer community, and absolutely no safe public space where someone like me could exist authentically. The silence was suffocating.
-                I started Gandhinagar Queer Pride because I couldn’t bear to see another queer person feel as invisible and unsupported as I once did. 
-                Over time, it grew into much more than a march and a collective. The Foundation has become a year-round engine for change.',
-                'image' => get_site_url() . '/articles/advocates/rahul-upadhyay.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#YOU ARE ALSO CO-PRESIDENT OF INTERPRIDE. WHAT DOES THAT ROLE INVOLVE? 
-                Being elected as the Co-President of InterPride is one of the greatest honours of my life. To be chosen by the membership, with overwhelming support, as the youngest and the first South Asian to hold this role, is not just a personal milestone — it’s a powerful signal that the global Pride movement is ready to embrace new and young leadership, new geographies, and new ways of thinking. 
-                It’s a big responsibility, and I carry it with deep humility. I know I’m still learning. But I also know that I bring something essential to the table: the lived experience of being a young, queer, brown organiser from a part of the world that is often overlooked in global LGBTQIA+ narratives. 
-                #IT CAN BE ARGUED THAT WE HAVE COME A LONG WAY IN POSITIVE LGBTQIA+ REPRESENTATION IN THE PAST DECADES. WHAT MORE NEEDS TO BE DONE, BOTH GLOBALLY AND PARTICULARLY IN SOUTH ASIA? 
-                Yes, we’ve come a long way — but we’re far from done. In fact, lately it feels like we’re going backwards. 
-                Recent developments globally have shown us how fragile this progress is. In the United States — once seen as a leader in queer rights — trans communities are under brutal legislative attack. In Türkiye, Hungary, and several other nations, queer identities are being erased, criminalised, and vilified. These aren’t isolated incidents — they’re part of a wider global rollback that threatens to push us back 50 years.
-                The movement, simply put, needs more momentum. More people standing up, more governments listening, and more communities demanding justice and equality. 
-                India decriminalised homosexuality in 2018, a historic and long-overdue victory. Nepal and Thailand have recently taken bold steps by legalising same-sex marriage, offering inspiration to the region. Yet these wins cannot be mistaken for widespread liberation.
-                In India, despite the decriminalisation, the judiciary last year denied same-sex marriage. Queer people still face discrimination, violence, and invisibility in homes, workplaces, and policies. Trans persons continue to be marginalised, denied healthcare, employment, and dignity. In rural areas, even conversations about queerness are a privilege not yet possible. 
-                We must go beyond token visibility and demand policies that protect, empower, and affirm queer lives.',
-                'image' => get_site_url() . '/articles/advocates/rahul-upadhyay.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“I STARTED GANDHINAGAR QUEER PRIDE BECAUSE I COULDN’T BEAR TO SEE ANOTHER QUEER PERSON FEEL AS INVISIBLE AND UNSUPPORTED AS I ONCE DID”',
-                'content' => '#WHAT DO YOU CONSIDER TO BE YOUR GREATEST ACHIEVEMENT? 
-                My greatest achievement isn’t a single event or accolade — it’s the lives I’ve touched and the spaces I’ve helped create for queer people to be seen, heard, and celebrated. 
-                On a personal level, being entrusted with the leadership of InterPride was a humbling moment. 
-                But ultimately, what I consider my greatest achievement is the sense of belonging I’ve been able to create — both for myself and for others. Whether through support networks, Pride events, or one-on-one conversations, I am working to ensure that no queer person feels like they have to hide who they are, or that they are alone in their journey.
-                #PRIDE – PARTY OR POLITICS? 
-                Protest!',
-                'image' => get_site_url() . '/articles/advocates/rahul-upadhyay.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
+            $ordered = [];
+            if ($advocate && in_array($advocate, $tracked)) {
+                // Move the tracked file to the front
+                foreach ($advocate_files as $file) {
+                    if (strpos($file, $advocate) === 0) {
+                        $ordered[] = $file;
+                    }
+                }
+                // Add the rest of the files in their original order, the cover.php first
+                foreach ($advocate_files as $file) {
+                    if (!in_array($file, $ordered)) {
+                        $ordered[] = $file;
+                    }
+                }
+            } else {
+                // If no specific advocate is tracked, just use the original order
+                $ordered = $advocate_files;
+            }
 
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'PEDRO IVO OLIVEIRA',
-                'content' => '#PEDRO IVO OLIVEIRA IS A MASTER’S STUDENT IN INTERNATIONAL AND DEVELOPMENT STUDIES SPECIALISING IN GENDER, RACE, AND DIVERSITY
-                (He/Him – “However, I fully support everyone’s right to use the pronouns they feel most comfortable with”)',
-                'image' => get_site_url() . '/articles/advocates/pedro-ivo-oliveira.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU, AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                My name is Pedro Ivo Oliveira, and I am a Master’s Student in International and Development Studies specialising in Gender, Race, and Diversity at the Graduate Institute of International and Development Studies in Geneva, Switzerland. Originally from Brazil, I come from a low-middle-income background and am the first person in my family to pursue a graduate program.
-                I have extensive experience in LGBTQI+ human rights, social inclusion, and development, having worked in international organisations and international NGOs such as the Organisation of American States (OAS), ILGA World, and currently, Outright International. I am also a Salzburg Global Fellow under the New Voices for Public Policy in Europe’s cohort.',
-                'image' => get_site_url() . '/articles/advocates/pedro-ivo-oliveira.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“I WOULD ASK FOR A WORLD IN WHICH ALL FORMS OF EXISTENCE ARE CELEBRATED”',
-                'content' => '#YOUR RESEARCH FOCUSES ON THE RELATIONSHIPS BETWEEN PUBLIC AND GLOBAL HEALTH, GENDER, AND SEXUALITY. WHAT HEALTH CHALLENGES MIGHT LGBTQI+ PEOPLE FACE THAT THEIR HETEROSEXUAL FRIENDS MAY NOT?
-                From intersex genital mutilation (IGM) to the denial of HIV-related treatment, LGBTQI+ individuals face unique and disproportionate health challenges due to stigma and discrimination in all phases of their lives. With that in mind, my research focuses on the intersections of gender, sexuality, and health.
-                During my undergraduate degree, I researched the global HIV response and the specific needs of the key populations of men who have sex with men (MSM) and transgender persons. Currently, I am investigating the realities of drug policy and harm reduction and the challenges that disproportionately affect our communities, such as chemsex, drug use, integral health issues, and sexually transmitted infections.
-                Secondly, I am also interested in researching the realities of sex workers in contexts of criminalisation and neglect by the traditional forms of power and understanding their movement’s resistance and organization as a pathway for meaningful collective and community care.',
-                'image' => get_site_url() . '/articles/advocates/pedro-ivo-oliveira.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#WE’VE ARGUABLY COME A LONG WAY IN LGBTQI+ RIGHTS IN THE PAST DECADES, OR AT LEAST IN SOME PARTS OF THE PLANET. WHAT MORE NEEDS TO BE DONE?
-                I believe that we still have a long road ahead. Many countries continue to criminalize same-sex relationships and LGBTQI+ existences more broadly, and even in countries without these harmful criminal laws, discrimination, and violence targeting LGBTQI+ communities reach alarming numbers every year.Besides that, we are currently following the passing of a massive wave of anti-LGBTQI+ laws that are an enormous danger to our communities worldwide and are creating harmful consequences related to health care access and education, for example. Therefore, more than ever, we must reorganise, rearticulate, and reconvene to redesign and recreate our globalized strategies to respond effectively to these movements’ rise.
-                #WHAT DO YOU CONSIDER TO BE THE BIGGEST CHALLENGES FACING THE GLOBAL LGBTQI+ COMMUNITY IN THE NEXT DECADE?
-                I believe that the rise of the anti-gender, anti-rights, and anti-LGBTQI+ movements worldwide, aligned with the rise of anti-democratic and authoritarian governments and administrations, is the biggest threat of the next decade. These reactionary movements are trying to (and successfully) conquer massive attention and support to undermine our communities’ civil, political, economic, social, and cultural human rights. However, every moment of crisis such as this one must be understood as an opportunity for collective mobilisation toward meaningful change. Paraphrasing one of my favorite intellectuals–the Brazilian drag queen Rita von Hunty - all human power can be resisted by other humans, and history teaches us that all tyrants will always find their way into the trash can. Therefore, we continue to work.',
-                'image' => get_site_url() . '/articles/advocates/pedro-ivo-oliveira.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“WE ARE CURRENTLY FOLLOWING THE PASSING OF A MASSIVE WAVE OF ANTI-LGBTQI+ LAWS THAT ARE AN ENORMOUS DANGER TO OUR COMMUNITIES WORLDWIDE”',
-                'content' => '#YOU ARE GIVEN THREE WISHES. WHAT WOULD THEY BE?
-                That’s a tricky question! I would ask for a world in which all forms of existence are celebrated; in which all human beings are entitled to competent, inclusive, and equal health care access that addresses their specific needs; and a future where we are capable of overcoming the multidimensional crises that are currently affecting us and designing a new way of living, working, and existing.
-                #PRIDE – POLITICS OR PARTY?
-                LGBTQI+ historical movements teach us that there is no separation between these two: Stonewall’s legacy, for example, became both  
-                a political act and a celebration march.  
-                Our communities do not face the same struggles because we are not inserted in the same contexts. Therefore, to meaningfully foster transformation and change, we must enhance our sense of transnational solidarity, and there is no better phrase to sum up it than Marsha P. Johnson’s “no pride for some of us without liberation for  all of us.”',
-                'image' => get_site_url() . '/articles/advocates/pedro-ivo-oliveira.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'ADELLE BARKER',
-                'content' => '#ADELLE BARKER IS THE TRANS AND NON-BINARY NETWORK ASSOCIATE FOR THE LGBTQ+ NETWORK AT SKY
-                (She/Her – “Proudly, openly, and said with true authenticity”)',
-                'image' => get_site_url() . '/articles/advocates/adelle-barker.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#WHO ARE YOU AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                I’m Adelle Barker – parent, team leader for Home Service at Sky, LGBTQ+ Network Associate for Trans and Non-Binary inclusion, and someone who accidentally turned “I don’t know how to be trans” into a bit of a life motto.
-                Professionally, I’ve been with Sky for 10 years now, mostly in field-based and leadership roles. I love the people side of things – supporting others, coaching, helping teams grow – and I’ve always found myself drawn to making things better for those around me, whether that’s in Home Service or diversity and inclusion work.
-                #YOU ARE THE TRANS AND NON-BINARY NETWORK ASSOCIATE FOR THE LGBTQ+ NETWORK AT SKY. WHAT DOES THIS PARTICULAR ROLE INVOLVE AND HOW SUPPORTIVE IS SKY OF ITS LGBTQ+ EMPLOYEES?
-                The role is part-visibility, part-voice, and part-vulnerable overshare – which aligns with all my values.
-                It means I get to represent our trans and non-binary employees, push for better education and awareness, and create safe spaces to talk about real-life experiences – the awkward, the joyful, the challenging. I’ve run panels, events, supported campaigns, and I help shape policies and practices so they reflect lived realities, not just buzzwords. This is all volunteer-based, like many employee networks.
-                Sky has honestly been incredible. I’ve been supported in ways I never expected – from leadership standing beside me, to the LGBTQ+ Network becoming a lifeline during my transition. I’ve cried in meetings, laughed my way through nerves on panels, and felt truly seen here. It’s been life-affirming.',
-                'image' => get_site_url() . '/articles/advocates/adelle-barker.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“WE NEED MORE TRANS VOICES IN THE ROOMS, NOT JUST ON THE FRONT PAGES”',
-                'content' => '#TRANS ISSUES ARE BEING REPORTED MORE THAN THEY HAVE EVER BEEN BEFORE. HOW FAIR AND ACCURATE DO YOU FEEL THAT REPORTING HAS BEEN, AND WHAT CAN BE DONE TO IMPROVE IT?
-                Let’s be real – it’s a mixed bag.
-                Trans people are suddenly a headline, but we’re not a new phenomenon. A lot of the reporting swings between sensationalism, fear-mongering and simplified “inspiration-porn”, when most of us are just trying to live, work, and exist with a bit of dignity, whilst doing our weekly shop!
-                We need more trans voices in the rooms, not just on the front pages. Journalism that involves us and doesn’t just talk about us. And frankly, some compassion wouldn’t go amiss either.',
-                'image' => get_site_url() . '/articles/advocates/adelle-barker.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHAT ISSUES AND CHALLENGES DO TRANS PEOPLE FACE WHICH OTHERS IN THE LGBTQ+ FLAG MAY NOT?
-                Transition can be messy, expensive, and deeply misunderstood. For many trans people, 
-                even existing in public is seen as a statement. We navigate everything from legal identity struggles, medical gate-keeping, to the emotional labour of coming out over and over again.
-                It’s a very visible thing, even if we sometimes wish we could simply “blend in”!
-                There’s also the added fun of things like “voice anxiety” on phone calls or fearing a passport check at the airport. It’s often the micro stuff that gets to you – the stuff people don’t see but chips away at your safety or confidence. We know we are seen. Sometimes being seen is amazing but other times it feels really scary and overwhelming.
-                While we share some common ground with the wider LGBTQ+ community, the trans experience is often its own tangled ball of yarn – full of gendered expectations, physical shifts, and a fight just to be believed.',
-                'image' => get_site_url() . '/articles/advocates/adelle-barker.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“LET US DANCE AND CELEBRATE WHO WE ARE. LET US WAVE FLAGS AND FEEL JOY”',
-                'content' => '#ON A PERSONAL OR PROFESSIONAL LEVEL, WHAT IS THE ONE THING YOU’VE BEEN PROUDEST OF?
-                Living.
-                I don’t say that flippantly. There was a time when I didn’t think a future like this – one where I’m out, open, happy, and working in a leadership role – was possible. Transitioning while parenting, leading a team, and showing up authentically is terrifying, but it’s also transformed everything.
-                And being able to stand up and say, “I don’t know how to be trans, but I’m learning out loud” – and having people listen? That’s magical, it really is.
-                #PRIDE – PARTY OR POLITICS?
-                Both. It starts as politics, turns into a party, and then cycles back again.
-                We owe our Pride to protests – and those who fought when being LGBTQ+ meant risking everything. So I think it’s vital we honour that, stay loud, and protect our rights.
-                But also? Let us dance and celebrate who we are. Let us wave flags and feel joy. For many of us, Pride is the one place we can exist fully, without apology.',
-                'image' => get_site_url() . '/articles/advocates/adelle-barker.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'DIOGO VIEIRA DA SILVA',
-                'content' => '#DIOGO VIEIRA DA SILVA IS IMPACT CENTERS OFFICER @ INNOVATION X HUB AT THE PORTO BUSINESS SCHOOL IN PORTUGAL AND A CONSULTANT IN LGBTI+ TOURISM, BUSINESS, MARKETING AND LEADERSHIP
-                (He/Him)',
-                'image' => get_site_url() . '/articles/advocates/diogo-vieira-da-silva.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                I’m Diogo Vieira da Silva. Professionally, my journey has spanned multiple areas such as international commerce, hospitality and tourism management, and digital marketing, supported by an International MBA and executive education.
-                Throughout my career, I’ve taken on various roles that allowed me to drive innovation, strategic communication, and foster environments committed to diversity, equity, and inclusion.
-                Alongside my “day job”, I have dedicated much of my life to activism - what I affectionately call my “gay job”.
-                I started early, at 16, by initiating a student-led movement aimed at integrating comprehensive sexual education into Portuguese schools. By the age of 18, I had founded my first NGO, establishing Porto’s first physical space specifically designed for marginalised communities, including the LGBTI+ community, sex workers, and individuals living with HIV. My professional trajectory has always been deeply intertwined with my commitment to social impact, consistently combining clear objectives with meaningful outcomes and social empowerment.
-                #YOU ARE IMPACT CENTERS OFFICER AT THE INNOVATION X HUB OF PORTO BUSINESS SCHOOL. WHAT DOES THAT ROLE INVOLVE?
-                As Impact Centers Officer, my role involves coordinating strategic initiatives across several specialised centres at the Innovation X Hub, including sustainability, entrepreneurship, tourism, real estate, Africa, and AI. I facilitate collaborations between academia, industry leaders, and policymakers, focusing on driving innovation, applied research, educational programs, community engagement, and attracting investment to create meaningful societal and economic impacts.',
-                'image' => get_site_url() . '/articles/advocates/diogo-vieira-da-silva.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“FOSTERING AN ENVIRONMENT WHERE QUEER INDIVIDUALS FEEL EMPOWERED TO BECOME ENTREPRENEURS AND CREATE THEIR OWN MEANS OF LIVELIHOOD IS INCREDIBLY IMPORTANT”',
-                'content' => '#YOU ARE ALSO CO-FOUNDER OF VARIAÇÕES. WHAT IS VARIAÇÕES AND WHAT DOES IT DO?
-                Variações is actually the third NGO I’ve founded. My journey in activism started with CASA – Centro Avançado de Sexualidade e Afectos, which served as Porto’s first community centre dedicated to supporting vulnerable and marginalised communities. The second was It Gets Better Portugal, the official Portuguese affiliate of the global It Gets Better Project, which I introduced to Portugal in 2012. Later, as European Coordinator of It Gets Better from 2017 to 2018, I amplified the positive impact of storytelling within the LGBTI+ community across Europe.
-                Variações, Portugal’s LGBTI+ Commerce and Tourism Association, came about while I was working at a gay hotel in Lisbon. It struck me deeply how disconnected LGBTI+ businesses were despite their significant potential. Motivated by this, I established Variações in 2018 to organise and strategically support the sector nationally. This led to the groundbreaking “Proudly Portugal” campaign in 2019, Portugal’s first-ever promotional campaign highlighting the country as an inclusive LGBTI+ destination. Our efforts culminated in Lisbon being chosen to host EuroPride 2025, a candidacy I led in 2022.
-                Most recently, as Coordinator General of Porto Pride, I facilitated its transition into an independent organisation. ',
-                'image' => get_site_url() . '/articles/advocates/diogo-vieira-da-silva.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#HOW IMPORTANT DO YOU THINK A CLIMATE OF DIVERSITY AND INCLUSION IS, BOTH IN THE CORPORATE WORKSPACE AND IN THE WIDER WORLD
-                Creating a climate of diversity and inclusion is essential, especially when we look at the challenges faced by the LGBTI+ community in terms of employment. Historically, queer individuals have encountered significant barriers to accessing stable employment, making it crucial to support and encourage LGBTI+ businesses that actively hire queer people. Additionally, fostering an environment where queer individuals feel empowered to become entrepreneurs and create their own means of livelihood is incredibly important. This autonomy helps break down systemic barriers, promotes economic independence, and ultimately contributes to building a more inclusive and equitable society for everyone.
-                #AND HOW DO WE CREATE THAT POSITIVE CLIMATE?
-                Creating a positive climate starts with genuine leadership commitment, inclusive policies, ongoing education, and active listening. It involves transparent hiring practices, training on unconscious bias, and clear accountability measures. Additionally, it’s vital to support Pride events actively. In a world where countries, including the USA, are increasingly pushing back against Diversity, Equity, and Inclusion, companies and brands that choose to support Pride events in the current climate demonstrate a sincere commitment - not just marketing strategies - to fostering inclusivity and standing with marginalised communities. Ultimately, a culture that genuinely celebrates diversity and embeds inclusion into every action is key.',
-                'image' => get_site_url() . '/articles/advocates/diogo-vieira-da-silva.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“PRIDE IS UNDENIABLY POLITICAL — IT WAS BORN OUT OF PROTEST… BUT IT’S ALSO A CELEBRATION OF HOW FAR WE’VE COME, OF RESILIENCE, OF LOVE, AND OF THE JOY IN BEING WHO WE ARE”',
-                'content' => '#PRIDE – PARTY OR POLITICS?
-                Both. Pride is undeniably political — it was born out of protest and continues to advocate for visibility and rights. But it’s also a celebration of how far we’ve come, of resilience, of love, and of the joy in being who we are.
-                And beyond the flags and glitter, Pride is also a vital space to uplift and give a platform to queer artists who rarely get the visibility they deserve. It’s about showcasing our talent, our culture, and our voices.
-                As someone who helps organise a Pride, I’ve come to understand that we are not the owners of the movement — we are simply its temporary guardians, with the responsibility to protect it, honour its legacy, and pass it on stronger than we found it.',
-                'image' => get_site_url() . '/articles/advocates/diogo-vieira-da-silva.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'DREW HUBBARD',
-                'content' => '#DREW HUBBARD IS A WRITER AND TV SCRIPT WRITER AND EDITOR AND EXPERIENCED SENSIVITY READER
-                (He/They)',
-                'image' => get_site_url() . '/articles/advocates/drew-hubbard.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => '',
-                'content' => '#YOU DESCRIBE YOURSELF AS A “SENSITIVITY READER”. WHAT DOES THAT MEAN AND WHAT DOES THAT WORK INVOLVE?
-                A sensitivity reader helps writers bring out more authenticity in their story and characters, especially when writing people unlike themselves. 
-                Sometimes it involves highlighting a moment that could come across as problematic or leans into a harmful stereotype or trope, though I always explain my reasoning, and offer alternatives. Mostly, I find myself encouraging the writer to dig deeper and go bigger, to make the characters leap off the page because they feel so real.
-                #WHY DO YOU THINK THERE IS A NEED FOR A SENSITIVITY READER? CAN YOU PROVIDE AN EXAMPLE?
-                Because writers’ research is often just a quick Google, or they rely on what they remember from TV, film or books, the same outdated clichés and stereotypes keep getting recycled. 
-                Even with the best intentions, if a writer isn’t queer, they often don’t know what they don’t know.
-                I’m always talking to the LGBTQ+ community, and staying up to date with  current issues, so I can help my clients deepen their characters, and bring the nuances of their story up to date. Readers can be ruthless, and aren’t afraid to share their grievances online. Several authors have been called out for problematic characters, which would’ve been picked up by a sensitivity reader had they used one.',
-                'image' => get_site_url() . '/articles/advocates/drew-hubbard.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“EVEN WITH THE BEST INTENTIONS, IF A WRITER ISN’T QUEER, THEY OFTEN DON’T KNOW WHAT THEY DON’T KNOW”',
-                'content' => '#YOU’VE WRITTEN FOR TV. TODAY WE’RE SEEN MORE LGBTQ+ REPRESENTATION ON TV AND IN OTHER MEDIA THAN EVER BEFORE. HOW TRUE TO LIFE DO YOU THINK THESE REPRESENTATIONS ARE, AND WHAT ROOM IS THERE FOR IMPROVEMENT?
-                We are seeing more LGBTQ+ rep, but we are getting fewer LGBTQ+ characters than we were a few years ago, which is disappointing. However, we are seeing more diversity and intersectionality. Writers are learning that there’s a spectrum when it comes to queerness, and are creating characters who are flawed, messy and have questionable morals — a nice change from the perfect gay best friend stereotype we’ve seen too often. But many TV shows still feature just a single LGBTQ+ character, with zero queer community and only cis/het friends. We flock together!
-                I’d love to see more queer characters surrounded by other queers, even if they’re not central to the plot.',
-                'image' => get_site_url() . '/articles/advocates/drew-hubbard.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“POWERFUL FORCES ARE STILL TRYING TO ROLL BACK HARD-WON LGBTQ+ RIGHTS, AND UNFORTUNATELY THEIR INFLUENCES SNEAK INTO MEDIA”',
-                'content' => '#IS THE MEDIA AND/ OR THE CREATIVE INDUSTRIES AS LGBTQ+-FRIENDLY AS MANY MIGHT SUPPOSE? OR ARE THEY CHALLENGES AND OBSTACLES EVEN IN THAT ENVIRONMENT THAT HAVE TO BE FACED AND OVERCOME?
-                There are lots of LGBTQ+ people in all creative sectors, but often those holding the power and the purse strings are not, and that’s where authenticity can get lost. Powerful forces are still trying to roll back hard-won LGBTQ+ rights, and unfortunately their influences sneak into media. This is why, more than ever, we need our cis/het allies to step up, speak out, and help empower queer voices.
-                I love encouraging all writers to include queer characters, because stories have the power to change hearts and minds, and we need that now more than ever.',
-                'image' => get_site_url() . '/articles/advocates/drew-hubbard.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#YOU’RE GIVEN THREE WISHES. WHAT WOULD THEY BE?
-                That I could communicate with animals; that holo-decks were a real thing; and that I could travel to parallel universes.
-                #PRIDE – PARTY OR POLITICS?
-                It’s gotta be both. It’s frustrating that we still need to fight, but we must remember the joy too. We deserve to party in spaces that are inclusive, safe and full of our community, and Pride is one of the few places where that’s possible.',
-                'image' => get_site_url() . '/articles/advocates/drew-hubbard.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'NAZ MIR',
-                'content' => '#NAZ MIR IS THE DIVERSITY & INCLUSION LEAD AT MONZO BANK
-                (He/They)',
-                'image' => get_site_url() . '/articles/advocates/naz-mir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                My name is Naz Mir, I’m a second-generation Bangladeshi immigrant (mixed with Welsh heritage) from London. Throughout my professional career I’ve had the privilege to rotate around different specialisms in People functions including Organisational Development, HR Systems and People Partnering, but for the last 10 years I have found my professional (and personal) home in Diversity & Inclusion (D&I). 
-                #YOU ARE DIVERSITY & INCLUSION LEAD AT MONZO BANK. WHAT DOES THAT ROLE INVOLVE?
-                On paper, ultimately I’m responsible for ensuring Monzo has a Diversity & Inclusion strategy that supports all our people thriving at work regardless of their background — but my role is so much more than that! It’s extremely varied and requires many different disciplines and skills including D&I knowledge (of course!), change management, coaching, data analytics, facilitator, connector and listener, to name a few. Whilst D&I can feel like a big responsibility, it’s one that is shared by many at Monzo: it truly is a team effort. When I joined the business, I was amazed to see how many people have taken personal responsibility to incorporate D&I into their day jobs. So a truer representation of my role is to help scale that passion for D&I in all of Monzo. If I can unlock 2% D&I leadership in everyone’s role then we continue to build D&I as an authentic part of who we are, not just what we do. 
-                #HOW IMPORTANT DO YOU THINK A CLIMATE OF DIVERSITY AND INCLUSION IS, BOTH IN THE CORPORATE WORKSPACE AND IN THE WIDER WORLD?
-                It’s critical. I say this because, no matter who we are, we live our lives in it every day.
-                In the wider world, we can’t ignore there’s a spotlight on Diversity & Inclusion at the moment. It’s really important we remember that a lot of the freedoms we have today are afforded to us from past struggles for a better tomorrow. This is what D&I at its heart is about. In the corporate workspace, I think people are looking for more human connections. In a post-Covid, AI-driven world, it’s easy for working relationships to feel slightly transactional.
-                We all seem busier, and with more priorities in and outside of work, so inclusion seeks to help build those moments of magic into each interaction, reminding ourselves that behind the colleague is an entire person with ambitions, hopes and lives seeking enrichment.',
-                'image' => get_site_url() . '/articles/advocates/naz-mir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“INCLUSION SEEKS TO HELP BUILD MOMENTS OF MAGIC”',
-                'content' => '#AND HOW DO WE CREATE THAT POSITIVE CLIMATE?
-                We can’t give back until we are looking after ourselves, so, particularly for people from our LGBTQ+ community, I’ve been encouraging everyone to breathe and take a minute, because there is a lot going on. It’s easy for us to feel powerless when there are some macro changes at play. I always come back to being guided by your purpose, the values you hold dear and letting those move you to action. I think about the question, “What do I actually have control over, what can I influence and what is beyond my control?” (helpful model from [author and businessman] Stephen Covey).
-                I then take personal responsibility  to show up with empathy and understanding for those around me. Sometimes, all it takes  is to listen. I think if all we can do is give  each other that space and respect, we will be creating a more positive climate. Being  your most inclusive self is so personal to each person, so others may be wanting to get more involved in causes important to them. In the workplace, speak with your diversity and inclusion team or employee networks about how to take part, or externally, you  can look to your favourite charities to see  what causes they are supporting at the moment.  ',
-                'image' => get_site_url() . '/articles/advocates/naz-mir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#WE’VE COME A LONG WAY IN LGBTQ+ RIGHTS. WHAT MORE NEEDS TO BE DONE?
-                I think the most important thing to remember is that even though we’ve come a long way, those things aren’t permanent. And this really is relevant to all communities that have made progress in recent times: there is a lot more to be done. We’re in a position as a community where both things can be true, we have made progress, but our rights are also currently being voted away.
-                As a member of the LGBTQ+ community, my personal priority recently has been to support the most marginalised within our community. I can’t speak for all, but currently my trans and non-binary friends are sharing with me how afraid they are given recent developments. It’s not a new thing ؅— there have always been members of our community who have been silenced and more vulnerable — and I take personal responsibility to support them. It’s important to remember that the power of oppression doesn’t really differentiate when it comes to “different”.
-                Taking someone else’s rights away makes it all that much easier to take yours away next. ',
-                'image' => get_site_url() . '/articles/advocates/naz-mir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“A LOT OF THE FREEDOMS WE HAVE TODAY ARE AFFORDED TO US FROM PAST STRUGGLES FOR A BETTER TOMORROW”',
-                'content' => '#WHAT IS THE ONE THING YOU’VE BEEN PROUDEST OF?
-                It’s always amazing and career-affirming when you hear about the positive experiences people have had because of the work you’ve put out there, but it’s never you working in isolation! 
-                So the thing I’m proudest of is the network of people I’ve encountered in my career who do not necessarily get paid to work on diversity and inclusion and yet they show up every day to make a difference, not for themselves, but for those around them. It’s been the greatest joy of my career to be surrounded by people who know there’s a better future out there and are happy to work towards it. So many of them are still in my life as a trusted network and group that I can turn to for ideas, laughter and moments of much needed decompression.
-                #YOU HAVE THREE WISHES. WHAT WOULD THEY BE?
-                That everyone listens to understand instead of listening to respond; that everyone has a safe and happy Pride; and that Rihanna would just drop that album already.',
-                'image' => get_site_url() . '/articles/advocates/naz-mir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'LEXIE SHAIBU-LENOIR',
-                'content' => '#LEXIE SHAIBU-LENOIR IS A HOSPITALITY & EVENT PROFESSIONAL, HEAD OF COMMERCIAL OPERATIONS OF UK BLACK PRIDE AND THE FOUNDER OF QUEER WEDDINGS
-                (She/Her)',
-                'image' => get_site_url() . '/articles/advocates/lexie-shaibu-lenoir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                My name is Lexie Shaibu-Lenoir, and I have spent the last 20 years working as a hospitality and event professional. I’m proud to have founded the first wedding planning company dedicated exclusively to LGBTQ+ couples. I also sit on the LGBTQIA+ Advisory Board for Belmond, and I’m the Head of Commercial Operations at UK Black Pride.
-                #YOU ARE AN HOSPITALITY & EVENT PROFESSIONAL. WHAT DOES THAT ROLE INVOLVE?
-                Throughout my professional career, I’ve primarily worked in luxury hotels and event venues. This industry has truly shaped me, and I’ve gained invaluable experience over the years.
-                Working in hotels involves comprehensive training programs covering a wide range of topics, from wine knowledge and customer service to regular food tastings for product understanding and effective complaint resolution. My experience with catering companies has further broadened my understanding of operations across various venues.
-                #WE’VE ARGUABLY COME A LONG WAY IN LGBTQ+ RIGHTS IN THE PAST DECADES. SHOULD WE JUST REST ON OUR LAURELS – OR IS THERE MORE TO BE DONE?
-                We have definitely made a lot of progress in advancing LGBTQ+ rights, however there is always more to be done in the community. The LGBTQ+ community are the most marginalised people, and being a queer black woman adds another layer to it. We’re witnessing trans rights being taken away, and the trans community being constantly under attack. Racism is rife across multiple sectors and our peers feel unsafe on a daily basis in their own home, at work, and outside. For this reason, we must continue to stand up for our community.',
-                'image' => get_site_url() . '/articles/advocates/lexie-shaibu-lenoir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“WHEN PEOPLE CREATE SPACES THAT ARE NOT INCLUSIVE AND WHERE YOU DON’T FEEL WELCOME, YOU CREATE YOUR OWN”',
-                'content' => '#ON A PERSONAL OR PROFESSIONAL LEVEL WHAT IS THE ONE THING YOU’VE BEEN PROUDEST OF? 
-                I’m proud to have married a woman (Aisha Shaibu-Lenoir) who shares the same values as me and is doing a wonderful job for the community. She’s the Director of The Common Press which is a queer intersectional bookshop in Brick Lane and she’s put on some amazing events and done a lot to raise funds to keep the place open. It’s a safe space with a lot of great resources, where you can have a tea and a natter and connect with others. I’m inspired by her and she keeps pushing me to break boundaries every day and be the best version of myself. ',
-                'image' => get_site_url() . '/articles/advocates/lexie-shaibu-lenoir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#YOU ARE ALSO HEAD OF COMMERCIAL OPERATIONS OF UK BLACK PRIDE. WHY DO YOU THINK THERE IS A NEED FOR A BLACK PRIDE? 
-                When people create spaces that are not inclusive and where you don’t feel welcome, you create your own. This is the reason why I created Queer Weddings in the first place. UK Black Pride has been born out of the sheer desire to welcome those who have felt excluded elsewhere. We have had up to 25,000 people attend and it is a privilege for our team to put on this event every year. We welcome around 250 volunteers who dedicate hours of their time to help us make this event a success. Lady Phyll is an absolute inspiration, a great leader, and has dedicated her life to the cause to ensure black and POC people are never forgotten.
-                #WHAT’S A TYPICAL DAY FOR LEXIE SHAIBU-LENOIR? 
-                There is never a typical day in my life! I could be planning a wedding one day, travelling the next day (I’m writing this piece from a beautiful hotel in Cape Town!), being part of a panel to discuss inclusivity, helping my wife with her business, running an event, or planning a group trip. My purpose is to serve the community in whatever capacity I can with all the skills I have gained over the years.',
-                'image' => get_site_url() . '/articles/advocates/lexie-shaibu-lenoir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“THERE IS ALWAYS MORE TO BE DONE IN THE COMMUNITY”',
-                'content' => '#YOU’RE GIVEN THREE WISHES – WHAT WOULD THEY BE? 
-                This is a hard one because I have a long list of wishes I would love to make happen. But liberation, equal rights, and equity for all. We need to have a more balanced system that will benefit everyone, not just the super rich.
-                #PRIDE – PARTY OR POLITICS? 
-                Absolutely both! Having said that, politics comes before the party. We need to keep fighting for our rights and ensure that everyone is included in the fight. We can celebrate ourselves whilst ensuring that we are also part of the political discourse.',
-                'image' => get_site_url() . '/articles/advocates/lexie-shaibu-lenoir.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'ZAC THOMPSON-HUNT',
-                'content' => '#ZAC THOMPSON-HUNT IS A SENIOR LEGAL COUNSEL AND  CHAIR OF PRIDE@REVOLUT
-                (He/Him)',
-                'image' => get_site_url() . '/articles/advocates/zac-thompson-hunt.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU AND WHAT IS YOUR PROFESSIONAL BACKGROUND?
-                I’m Zac, born and raised in Sydney, Australia, but my husband, dog and I swapped the harbour for the Thames about four years ago and are now proud Londoners. I’ve always had a deep interest in history, especially the history of social change and discovering the often decisive role queer personalities played in those key turning points in time. Professionally, I am a dispute resolution lawyer, which, I think, is a natural extension of this interest. The law is, in some respects, applied history. Lawmakers weigh up different factual accounts of the past to determine the way the law should shape our rights, obligations, and the way we live together going forward. It is a deeply rewarding profession. 
-                #YOU ARE A SENIOR LEGAL COUNSEL AND CHAIR OF PRIDE@REVOLUT. WHO ARE REVOLUT AND WHAT DOES YOUR ROLE INVOLVE?
-                Revolut is unlike any other company; it’s a true unicorn. We are a global fintech, based in London, on a mission to simplify all things money, and empower our customers to achieve their financial goals through innovative and effortless banking solutions. We have a dream team of over 10,000 Revoluters who are building a seamless, intuitive platform and designing best-in-class products that our customers love. From multi-currency wallets, to investing, borrowing, and lifestyle benefits like travel insurance, data, airport lounges, and more. It’s a fast-paced, exciting place to work. 
-                As for my role, I sit in the Legal Team where I provide legal advice on all sorts of contentious and strategic matters, paving the way for Revolut’s continued success. I am also the Chair of Revolut’s Pride network - a community of over 500 fiercely proud LGBTQ+ and Allied Revoluters. Our mission is to empower our colleagues old and new to bring their truest and best selves to work, to unlock their full professional potential, and to ensure Revolut’s products are authentic and appropriate for LGBTQ+ customers. ',
-                'image' => get_site_url() . '/articles/advocates/zac-thompson-hunt.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“DIVERSITY IS EQUALLY IMPORTANT BEYOND THE WORKPLACE. IT ENRICHES OUR DAY-TO-DAY LIVES”',
-                'content' => '#HOW IMPORTANT IS A CLIMATE OF DIVERSITY AND INCLUSION?
-                It is absolutely essential. A diversity of ideas and experiences is vital for developing innovative, relevant products in the financial services market. Revolut has experienced tremendous growth in recent years that would not have been possible without fostering a diverse and inclusive workforce.
-                We recognise that without genuine diversity and inclusion, there is a risk of becoming an echo chamber where ideas go unchallenged and opportunities are missed. 
-                Diversity is equally important beyond the workplace. It enriches our day-to-day lives, and, speaking for myself, I’d probably get quite bored living in a community where everyone looked, thought and believed the same thing.
-                Perhaps it is the lawyer in me, but I like being challenged, am naturally curious, and genuinely think people flourish when they dare to be different. ',
-                'image' => get_site_url() . '/articles/advocates/zac-thompson-hunt.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#AND HOW DO WE CREATE THAT KIND OF INCLUSIVE ENVIRONMENT?
-                I am a big advocate for strategies that empower and challenge people to be the best versions of themselves, which I think are highly effective when couched in positivity and optimism. I like this approach because it is inherently ambitious; and bold, ambitious plans driven by enthusiastic individuals tend to succeed at Revolut. 
-                #WE’VE MADE PROGRESS IN LGBTQ+ RIGHTS. IS THE FIGHT WON – OR IS THERE MORE TO DO?
-                There’s still important work to be done. I worry that, as time passes, we risk forgetting the pivotal struggles that have shaped our rights — the Holocaust, the Stonewall riots, the AIDS crisis, and many others. These events carry hard-earned lessons, and forgetting them opens the door to complacency. Progress is not permanent. Any student of history will tell you that freedoms, once won, can be quietly eroded. Our responsibility is to protect the gains we’ve made and continue pushing forward, so the next generation inherits a world more just, inclusive, and aware than the one our predecessors were born into.',
-                'image' => get_site_url() . '/articles/advocates/zac-thompson-hunt.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“PROGRESS IS NOT PERMANENT… FREEDOMS, ONCE WON, CAN BE QUIETLY ERODED”',
-                'content' => '#WHAT DO YOU CONSIDER YOUR PROUDEST ACHIEVEMENT?
-                My proudest personal achievement would certainly be my marriage here in London  
-                last August. I grew up in a time when being openly gay at school was a fate worse than death, and marriage between two men was inconceivable. So to marry the love of my life before so many friends and family on a beautiful English summer’s day was a surreal, powerfully moving experience I’ll cherish for the rest of my days.
-                Professionally, I am most proud of the role I played in advancing Revolut’s application for a UK banking licence last year. It was a privilege to be part of a tight-knit team making the case for Revolut to be the UK’s freshest bank. 
-                #PRIDE – PARTY OR POLITICS?
-                For me, Pride is a celebration. Of course, the rights and freedoms of LGBTQ+ people are derived from legal and political change, but  
-                I take Pride month as a moment to celebrate. LGBTQ+ parties in particular, have been  hugely formative spaces for me, where I’ve come into my own and felt truly comfortable  in my identity. I’ve met people like me, and wildly different people, and through that experience witnessed how brilliant and special the LGBTQ+ community is. It was on the dance floor at an LGBTQ+ party at university that I met my now husband, so I know first-hand of the joy that the “party” side of Pride can bring. ',
-                'image' => get_site_url() . '/articles/advocates/zac-thompson-hunt.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-
-
-            <?php echo create_layout('split-media', $args = [
-                'title' => 'DAN PORTER',
-                'content' => '#DAN PORTER IS THE HEAD OF CONTENT AND SOCIAL MEDIA, TESCO AND CO-CHAIR OF ITS LGBTQ+ NETWORK
-                (He/Him/His)',
-                'image' => get_site_url() . '/articles/advocates/dan-porter.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '',
-                'content' => '#WHO ARE YOU WHAT AND IS YOUR PROFESSIONAL BACKGROUND? 
-                For more than 25 years I’ve worked in retail marketing roles for high street retailers including Boots and Tesco and creative agencies and spent three years in Germany at the International School of Hamburg. My multi award-winning work and experiences span all aspects of the advertising and marketing mix and I’ve covered all communication disciplines.
-                #YOU’RE HEAD OF CONTENT, SOCIAL MEDIA & INFLUENCERS AT TESCO. WHAT DOES THAT ROLE INVOLVE? 
-                I lead social media, content marketing and influencer activations which includes the biggest free UK magazine, the number three food recipe content website reaching millions of customers with billions of views per year. I love being part of a dynamic, fun, fast-paced, creative and inclusive environment where I am able to deliver exciting, bold, innovative results driven work that our customers love. 
-                #YOU’RE ALSO THE CO-CHAIR OF THE LGBTQ+ NETWORK AT TESCO. WHAT DOES TESCO DO TO SUPPORT ITS LGBTQ+ WORKERS AND COLLEAGUES? 
-                The LGBTQ+ network has more than 2,500 members and aims to provide psychologically safe spaces for our colleagues, to help them feel like they belong and can thrive. We celebrate the wonderful, diverse and vibrant members of our communities, amplifying LGBTQ+ voices and support colleagues to enable them to bring their authentic selves to work each and every day. We also help educate our colleagues to understand different identities, how to be fully inclusive and a great ally.',
-                'image' => get_site_url() . '/articles/advocates/dan-porter.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“DIVERSITY BRINGS BETTER THINKING, OUTCOMES AND WORKPLACES. IT’S INCLUSION THAT BRINGS IT TO LIFE”',
-                'content' => '#HOW IMPORTANT DO YOU THINK IT IS FOR A PERSON TO BE OUT AT WORK? 
-                Personally, I think it’s incredibly important. Everyone should feel empowered to be their true selves without fear of judgment. To feel seen, heard, valued and respected, to be able to freely express differing perspectives, ideas and opinions brings so much richness to any situation. For me, hiding my true self for years was exhausting, stifling and not the best use of my energies. Being out has allowed me to really thrive and progress, I hope my visibility gives others the confidence to do the same in their own time and way.',
-                'image' => get_site_url() . '/articles/advocates/dan-porter.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                // 'title' => 'Name Surname',
-                'content' => '#DO YOU THINK AN ENVIRONMENT OF DIVERSITY AND INCLUSION IS IMPORTANT IN THE WORKPLACE AND THE WIDER COMMUNITY? WHAT BENEFITS DOES IT BRING? AND HOW DO WE BRING ABOUT THAT ENVIRONMENT? 
-                Absolutely. Diversity brings better thinking, outcomes and workplaces. But it’s inclusion that brings it to life. When people feel safe and celebrated, they flourish. Creating psychological safety through developing spaces where people can be their true, authentic selves is where the magic happens. We achieve this by active listening, representation, education, and real allyship – not just in moments of celebration, but in the quieter, everyday actions too.
-                #DESCRIBE A TYPICAL DAY IN THE LIFE OF DAN PORTER. 
-                No day is ever typical — which I love.  
-                I could be presenting on stage to hundreds of people, being on set at a shoot, reviewing creative for our next big campaign or working with our LGBTQ+ Network in stores. I try  to lead with kindness, clarity, and curiosity.  
-                I believe in celebrating the small wins, lifting others up, and making time to check in.  People matter and are at the heart of everything we do. Working in retail can be  
-                a very busy and reactive environment; it’s the people that keep me going, make me want to strive to be a better all round person. Outside  of work, I’m a big fashion, music and theatre fan, I love to read and find my peace in the garden up to my elbows in soil! I have just rejoined the gym so I’m looking forward to getting more active.',
-                'image' => get_site_url() . '/articles/advocates/dan-porter.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
-            <?php echo create_layout('split-editorial', $args = [
-                'title' => '“EVERYONE SHOULD FEEL EMPOWERED  TO BE THEIR TRUE SELVES WITHOUT FEAR OF JUDGMENT”',
-                'content' => '#ON A PERSONAL OR A PROFESSIONAL LEVEL WHAT DO YOU THINK HAS BEEN YOUR GREATEST ACHIEVEMENT? 
-                Professionally, there are lots of things I am really proud of. One of my best achievements is The Voice of The Checkout campaign. We created a talking checkout on TikTok inspired by the popular face filter app and using the duet feature to give customers the chance to become the voice of a Tesco checkout. We got the nation talking, with more than 48m views, trending for 10 days, global press pick up, seven prestigious industry award wins and more than 3K entries. Personally, co-chairing the network is a huge honour; through the work I do my ambition is always to play it forward and to be the role model I needed growing up.',
-                'image' => get_site_url() . '/articles/advocates/dan-porter.webp',
-                'image_alt' => '',
-                'image_credit' => '',
-            ]); ?>
+            foreach ($ordered as $file) {
+                include('advocates/' . $file);
+            }
+        ?>
     </section>
 
 
@@ -1862,6 +1499,7 @@
                 'title' => 'Kitty Power!',
                 'content' => '<strong>KITTY SCOTT-CLAUS</strong> IS A DRAG ICON AND SHE TALKS TO <strong>NIGEL ROBINSON</strong> ABOUT SISTERHOOD, RACING FOR RUPAUL AND LOSING SEVEN STONES IN ONE YEAR',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/cover.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ]); ?>
@@ -1874,6 +1512,7 @@
                 #HOW DID YOU START OUT AS KITTY?
                 I went to drama school and studied musical theatre so I was a musical theatre actor. My best friend is a drag queen and they were doing a Girls Aloud tribute night and they said they needed somebody to be Kimberley Walsh. I was, like, I could do that. I also saw that here were my free drinks and attention! That’s literally how I started in 2017 and look here we are now.',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/cover-full.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ]); ?>
@@ -1884,6 +1523,7 @@
                 #YOU APPLIED FOR SEASON TWO FOR RUPAUL’S DRAG RACE UK AND WERE ACCEPTED FOR SEASON THREE. WHAT WAS THE SELECTION PROCESS LIKE?
                 It was crazy! It was during lock down and Covid when I got cast. I auditioned for season two and at the time I was doing panto in Hastings. So I only had a day or two to film the audition tape. You have to put such a lot of time and effort filming and editing the tape to make a really decent one. When it was season three casting the world had shut down. And I remember thinking I’m never going have this time again so I need to make this the most incredible tape possible. I really enjoyed making it. I remember by the end of making the tape and editing it myself I thought that it was still making me laugh and I was enjoying the tape. I think that was a good sign. And it worked and I got cast!',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/kitty-gold-pink.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ], "accented"); ?>
@@ -1895,6 +1535,7 @@
                 #DID YOU GET ON WELL WITH ALL THE OTHER QUEENS BACKSTAGE?
                 It’s a competition at the end of the day and everyone wants to be the best - everyone’s there for that reason. But when it boils down to it we’re all just human beings having a fun time making a reality show. At the end of the day we’re all friends. We all get on, we all know the job and it’s also so much fun to film. It’s people having the same set of crazy experiences. The bond that you share with your sisters is very special.',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/kitty-gold-pink.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ]); ?>
@@ -1905,6 +1546,7 @@
                 #HOW DO YOU FEEL ABOUT WHAT YOU MIGHT CALL “OLD SCHOOL” DRAG LIKE LILY SAVAGE?
                 I have nothing but respect. I remember being little and seeing Lily Savage on TV and thinking this is crazy but amazing. I look back now - and this is what I think makes British drag so special - and I remember seeing clips as a child and thinking she was hilarious. And I see clips of Lily now and I’m, like, I had no idea that was what she was talking and joking about and that was what she was meaning. It’s the same as with pantomime dames: there’s something there for everyone.',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/kitty-gold-pink.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ]); ?>
@@ -1915,6 +1557,7 @@
                 I started with a personal trainer [Monty Simmons @MoveWithMonty] because my friend [drag queen] Ella Vaday had this personal trainer and she said she thought I’d really get on with him and I’d really do well. So, I said, sure, I’d go for a session with him. I put it off for ages and ages and then I met him at a party and I really got on with him and thought, OK, I’m going to do it.
                 I remember going to my first session with him and he asked what I wanted and I said I’d like to be just a little more healthy. He made it so easy and achievable. I started seeing results so quickly and it spurred me on. I said to myself I could do it and I was finding it fun. That’s the biggest thing: if you find it fun. He said I should just go to the gym once a week by myself as well as coming to see him twice a week. But I was, like, I can do it every day, not just once a week. So it really became a snowball effect.',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/kitty-red-silver-blue.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ]); ?>
@@ -1928,6 +1571,7 @@
                 There’s only one you and that what makes you incredible. That’s your super power.
                 <strong>Kitty Scott-Claus will be appearing in The Diana Mixtape at HERE at Outernet London (28 July – 10 August; www.hereldn.com) and the Lowry, Salford (19 – 24 August; www.thelowry.com)</strong>',
                 'image' => get_site_url() . '/articles/kitty-scott-claus/kitty-red-silver-blue.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
                 'image_credit' => 'PICTURES: CORINNE CUMMING. RETOUCHED BY HERR THE QUEEN',
             ]); ?>
@@ -2068,6 +1712,7 @@
                 'title' => 'FOUR PAWS AT A TIME',
                 'content' => 'LGBTQIA+ DOG PARENTS ARE REDEFINING FAMILY LIFE, DISCOVERS <strong>RAE JOAN ELKINGTON</strong> AS SHE MEETS UP WITH FOUR MUMS AND DADS AND THEIR FURRY FRIENDS',
                 'image' => get_site_url() . '/articles/pets/cover.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: INSTAGRAM @BETTYTHESTAFFORD',
                 'image_credit' => 'PICTURE: INSTAGRAM @BETTYTHESTAFFORD',
             ]); ?>
@@ -2081,6 +1726,7 @@
                 #RISE OF THE FUR GAYBIES
                 Through the lens of social media, LGBTQIA+ families unveil their lives, with their canine “children” often stealing the spotlight. Stars like Tikka the Iggy, an Italian Greyhound with two dads and 1.5 million Instagram followers, parades in adorable dog fashion whilst watching over two little human siblings. Pampered Pitties Reign and Snoh captivate millions on TikTok with their ASMR grooming and healthcare routines and love for their two Mums. Over in Norway, handsome Einstein the English Staffordshire Bull Terrier also has two mums who share his rehab journey and heartwarming bromance with his human Uncle Hans on Instagram, showing how fur babies forge deep bonds with extended members of queer families too.',
                 'image' => get_site_url() . '/articles/pets/cover.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => '',
             ]); ?>
@@ -2091,6 +1737,7 @@
                 As Jodie aptly puts it, “It’s about love, acceptance, connection, and support as well as creating memories.” Whether through social media fame or intimate family moments, these fur families are paving the way for a new understanding of what it means to be family.
                 After all, the love of a dog is unwavering and non-discriminatory, providing a haven of affection and companionship regardless of your identity or circumstances. Perhaps all family members should aspire to be a little more dog?',
                 'image' => get_site_url() . '/articles/pets/cover.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => '',
             ]); ?>
@@ -2098,6 +1745,7 @@
                 'title' => 'JP, FRED, HUGO AND COOPER',
                 'content' => 'JP, a Creative Director in London, and Fred, an Engineering Manager, share their lives with their cherished sausage dogs, Hugo and Cooper. “Our dogs are our little family,” JP muses. “We decided children weren’t for us, but our dogs fill that space.” Adopted as puppies from families unable to care for them, Hugo, once shy and introverted, found a perfect companion in the outgoing Cooper. Hugo and Cooper bring joy and companionship to their human Dads, especially on cherished trips to Cornwall.',
                 'image' => get_site_url() . '/articles/pets/fred-hugo-and-cooper.webp',
+                'has_face' => true,
                 'image_alt' => 'HUGO AND COOPER',
                 'image_credit' => 'HUGO AND COOPER',
             ], "accented"); ?>
@@ -2107,6 +1755,7 @@
                 When asked if Hugo and Cooper help the couple to express their identity or connect with others in the community, JP explains that people recognise the dogs before they do them, exclaiming “Who doesn’t love a gay man and a sausage dog?”
                 Fred and JP are proudly part of the LGBTQIA+ community, supporting professional networks and initiatives, with Hugo and Cooper often by their sides. They urge prospective pet parents to thoroughly research breeds to guarantee a good match with their lifestyle. Well said!',
                 'image' => get_site_url() . '/articles/pets/jp-fred-hugo-and-cooper.webp',
+                'has_face' => true,
                 'image_alt' => 'JP, FRED, HUGO AND COOPER',
                 'image_credit' => 'JP, FRED, HUGO AND COOPER',
             ], "accented"); ?>
@@ -2124,6 +1773,7 @@
                 'content' => '“Family can look like so many things, and I love that we are redefining it,” Lisa reflects, “the idea of being a ‘fur parent’ and having ‘fur grandchildren’ has become much more normal than it was in the 90s and 00s. You only have to look at Etsy and you’ll find lots of dog grandma gifts.”
                 She emphasises how dogs like Henry offer comfort and support during tough times and believes moving beyond traditional family structures is crucial, allowing individuals to form meaningful connections based on love, acceptance, and shared memories.',
                 'image' => get_site_url() . '/articles/pets/henry.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => '',
             ]); ?>
@@ -2134,6 +1784,7 @@
                 Connie expresses gratefully. “Oattie is not just a pet; he’s a part of the family.”
                 As the social media manager for her business, The Social Evolution, Connie values how Oattie serves as her unofficial personal assistant, bringing needed structure and balance to Connie’s life, especially when working from home. Oattie insists on regular breaks and walks, which contribute positively to her daily routine and keep her grounded. “He expects breakfast at the same time every morning and is always ready for his walk,” she says. Oattie ensures Connie doesn’t forget about self-care.',
                 'image' => get_site_url() . '/articles/pets/oattie.webp',
+                'has_face' => true,
                 'image_alt' => 'CONNIE AND OATTIE',
                 'image_credit' => 'CONNIE AND OATTIE',
             ], "accented"); ?>
@@ -2142,6 +1793,7 @@
                 'content' => 'Oattie’s sociable nature brings joy to everyone they meet, whether at a coffee shop or the seafront. “Oattie’s birthday is a big deal around here,” Connie explains, sharing that she recently made her furry son a special tuna cake with his face on it “which he loved!” Connie also prepared party bags with treats inside for his dog walker to share with his pup pals — how cute!
                 Oattie’s presence has enriched Connie’s life, making it more fulfilling; what more could you ask from a chosen family member?',
                 'image' => get_site_url() . '/articles/pets/oattie.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => '',
             ], "accented"); ?>
@@ -2152,6 +1804,7 @@
                 Despite Jodie’s separation from Marley’s other human mum in 2019, Marley remains the heart of their chosen family, dividing her time between both homes. “She was our constant — still full of love, still needing her walks,”
                 Jodie reflects on how Marley helped them through the transition. Marley’s presence is a source of healing and companionship.',
                 'image' => get_site_url() . '/articles/pets/marley.webp',
+                'has_face' => true,
                 'image_alt' => 'JODIE AND MARLEY',
                 'image_credit' => 'JODIE AND MARLEY',
             ]); ?>
@@ -2160,6 +1813,7 @@
                 'content' => 'For her family, Marley is a symbol of love and belonging, included in family festivities with her own little Christmas dinner and spoiled on her birthday with chicken, cuddles, and new toys. Last year, Marley sported a rainbow neck bandana at Portsmouth Pride with her other mummy, bringing smiles and sparking conversations. “Marley’s a real little connector, without even trying,” Jodie beams.
                 Outside of her role as Marley’s mum, Jodie runs a multi-award-winning online community which helps businesses use the free version of LinkedIn to become visible without spending a penny on marketing. To find her on LinkedIn, search for Jodie Goodchild.',
                 'image' => get_site_url() . '/articles/pets/marley.webp',
+                'has_face' => true,
                 'image_alt' => '',
                 'image_credit' => '',
             ]); ?>
@@ -2183,6 +1837,7 @@
                 Highlights from the two weeks of cultural and political events included a Human Rights Conference, sporting tournaments, a six-hour parade, with over 300 floats, and a 1000-foot long rainbow flag, and ended with a concert headlined by Wicked star Cynthia Erivo.
                 Go to: www.worldpridedc.org',
                 'image' => get_site_url() . '/articles/washington-pride/Cynthia-Erivo.webp',
+                'has_face' => true,
                 'image_alt' => 'Concert headlined by Wicked star Cynthia Erivo',
                 'image_credit' => 'PICTURES: WASHINGTON.COM',
             ]); ?>
@@ -2226,6 +1881,7 @@
                 'title' => 'WORLD PRIDE GOES DUTCH',
                 'content' => 'NEXT YEAR AMSTERDAM WILL BE HOSTING WORLD PRIDE. IN AN EXTRACT FROM THE LGBTQ+ TRAVEL GUIDE, BY ALICIA VALENSKI AND PUBLISHED BY LONELY PLANET, WE TAKE A LOOK AT WHAT THE CAPITAL OF THE NETHERLANDS HAS TO OFFER THE LGBTQ+ TRAVELLER',
                 'image' => get_site_url() . '/articles/lonely-amsterdam/cover.webp',
+                'has_face' => true,
                 'image_alt' => 'PICTURE: © FRANK WIJN/ GETTY IMAGES',
                 'image_credit' => 'PICTURE: © FRANK WIJN/ GETTY IMAGES',
             ]); ?>

@@ -1,6 +1,6 @@
-@import url('/pride-life-magazine/assets/css/reset.css');
-@import url('/pride-life-magazine/assets/css/bootstrap-utilities.min.css');
-@import url('/pride-life-magazine/assets/css/bootstrap-grid.min.css');
+@import url('/assets/css/reset.css');
+@import url('/assets/css/bootstrap-utilities.min.css');
+@import url('/assets/css/bootstrap-grid.min.css');
 @import url("https://use.typekit.net/rry7akh.css");
 
 :root {
@@ -49,7 +49,7 @@
     --shadow-large: 0 0 45px 0 rgba(0, 0, 0, 0.65);
 
     --mix-blend-mode: difference !important;
-    --mix-blend-filter: contrast(150%) brightness(250%) !important;
+    --mix-blend-filter: contrast(100%) brightness(150%) !important;
     --mix-blend-white: #FFFFFF !important;
     --mix-blend-grey: #999999 !important;
     --mix-blend-black: #000000 !important;
@@ -104,22 +104,22 @@ h1, .h1 {
     font-size: clamp(3.5rem, 5vw, 5rem);
 }
 h2, .h2 {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-size: clamp(1.4rem, 4vw, 2.5rem);
 }
 h3, .h3 {
-    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-size: clamp(1.3rem, 3.5vw, 2.25rem);
 }
 h4, .h4 {
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
 }
 h5, .h5, p.lead {
-    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
 }
 h6, .h6 {
     font-size: clamp(1.0rem, 1.5vw, 1.3rem);
 }
 p, ul, ol, li {
-    font-size: clamp(11px, 1.1vw, 1rem);
+    font-size: clamp(10px, 1.1vw, 1rem);
     font-weight: var(--font-weight);
     line-height: var(--line-height);
     margin-bottom: 0.5rem;
@@ -1462,12 +1462,9 @@ section.is-exiting > .layout .column {
             }
         }
         &.has-media {
-            max-height: calc(40% + var(--padding));
+            max-height: calc(38% + var(--padding));
             padding: 0 !important;
-
-            /* & > .object-fit-cover {
-                object-position: 30% 30%;
-            } */
+            
             &:nth-of-type(1) {
                 padding-bottom: var(--padding);
             }
@@ -1477,6 +1474,11 @@ section.is-exiting > .layout .column {
             &:nth-of-type(1):nth-last-of-type(1) {
                 max-height: 100% !important;
                 padding: 0 !important;
+            }
+        }
+        &.has-face {
+            & > .object-fit-cover {
+                object-position: 30% 20%;
             }
         }
 
@@ -1510,13 +1512,13 @@ section.is-exiting > .layout .column {
             width: 100% !important;
         }
         
-        margin-bottom: 1rem !important;
+        margin-bottom: 0 !important;
 
     }
-    /* .layout > .column .row .col:nth-of-type(1) { order: 1; }
-    .layout > .column .row .col:nth-of-type(2) { order: 3; }
-    .layout > .column .row .col:nth-of-type(3) { order: 2; }
-    .layout > .column .row .col:nth-of-type(4) { order: 4; } */
+    .layout > .column .row .col:nth-of-type(1) { margin-top: 0rem; }
+    .layout > .column .row .col:nth-of-type(2) { margin-top: 0.5rem; }
+    .layout > .column .row .col:nth-of-type(3) { margin-top: 1rem; }
+    .layout > .column .row .col:nth-of-type(4) { margin-top: 1.5rem; }
 }
 
 .row > .col > p:not(:first-child) {

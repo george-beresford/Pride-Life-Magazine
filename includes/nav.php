@@ -2,7 +2,6 @@
     <div class="row align-items-center">
         <div class="col">
             <a id="brand" href="<?= get_site_url(); ?>/" title="<?= $config['title']['brand_name']; ?>">
-                <!-- <?= file_get_contents(get_site_url() . '/assets/svg/pride-life-magazine.svg'); ?> -->
                 <img src="<?= get_site_url(); ?>/assets/svg/pride-life-magazine.svg" alt="<?= $config['title']['brand_name']; ?>" class="object-fit-contain">
             </a>
         </div>
@@ -30,14 +29,7 @@
                 </ul>
             </div>
         </div>
-
     </div>
-    
-    <!-- <div class="row sticky sticky-bottom">
-        <div class="col">
-            <h5>Footer stuff here</h5>
-        </div>
-    </div> -->
 </nav>
 
 <script type="text/javascript">

@@ -124,14 +124,13 @@
     }
 
     /**
-     * Split plain text content into columns as evenly as possible by sentence (each line is a sentence).
-     * Tries to equalise the length of all columns by word count, splitting lines if needed.
-     * If the next column would have 5 words or less difference, it will split the line.
+     * Split plain text content into columns as evenly as possible by word count,
+     * but never split inside a URL or HTML tag.
      * If a line starts with "#", any split part will also start with "# ".
      * Returns HTML string of <div class="col"><p>...</p></div> for each column.
      * If the algorithm fails to fill all columns, falls back to an even split by lines.
      */
-    function split_content_columns($text, $num_columns = 4, $tolerance = 5) {
+    function split_content_columns($text, $num_columns = 4) {
         if (empty($text)) {
             return str_repeat('<div class="col"></div>', $num_columns);
         }
@@ -141,8 +140,8 @@
             return $s !== '';
         });
 
-        // Flatten sentences into array of arrays of words, and track if line starts with #
-        $sentence_words = [];
+        // Flatten sentences into array of arrays of tokens (words, URLs, tags), and track if line starts with #
+        $sentence_tokens = [];
         $sentence_hash = [];
         foreach ($sentences as $sentence) {
             $has_hash = false;
@@ -150,99 +149,114 @@
                 $has_hash = true;
                 $sentence = preg_replace('/^\s*#\s*/', '', $sentence, 1);
             }
-            $words = preg_split('/\s+/', $sentence, -1, PREG_SPLIT_NO_EMPTY);
-            if ($words) {
-                $sentence_words[] = $words;
+            // Tokenize: keep URLs and tags as single tokens
+            $tokens = [];
+            $pattern = '/(<[^>]+>|https?:\/\/[^\s<]+|www\.[^\s<]+|\S+)/i';
+            if (preg_match_all($pattern, $sentence, $matches)) {
+                $tokens = $matches[0];
+            }
+            if ($tokens) {
+                $sentence_tokens[] = $tokens;
                 $sentence_hash[] = $has_hash;
             }
         }
 
-        // Calculate total words
-        $total_words = 0;
-        foreach ($sentence_words as $words) {
-            $total_words += count($words);
+        // Calculate total tokens (words, URLs, tags)
+        $total_tokens = 0;
+        foreach ($sentence_tokens as $tokens) {
+            $total_tokens += count($tokens);
         }
 
-        if ($total_words === 0) {
+        if ($total_tokens === 0) {
             return str_repeat('<div class="col"></div>', $num_columns);
         }
 
-        $target_words_per_col = ceil($total_words / $num_columns);
-        $columns = array_fill(0, $num_columns, '');
-        $col_word_counts = array_fill(0, $num_columns, 0);
+        $target_tokens_per_col = floor($total_tokens / $num_columns);
+        $columns = array_fill(0, $num_columns, []);
+        $col_token_counts = array_fill(0, $num_columns, 0);
 
         $col = 0;
-        foreach ($sentence_words as $i => $words) {
-            $sentence_word_count = count($words);
+        foreach ($sentence_tokens as $i => $tokens) {
             $has_hash = $sentence_hash[$i];
+            $token_count = count($tokens);
 
-            // If adding this sentence would exceed target, consider splitting
-            if (
+            // If adding this sentence would make the column much larger than target, try to split
+            while (
                 $col < $num_columns - 1 &&
-                $col_word_counts[$col] + $sentence_word_count > $target_words_per_col + $tolerance
+                $col_token_counts[$col] + $token_count > $target_tokens_per_col + 1 // +1 for tolerance
             ) {
-                // How many words can we add to this column to stay within tolerance?
-                $remaining = $target_words_per_col + $tolerance - $col_word_counts[$col];
-                if ($remaining > 0 && $remaining < $sentence_word_count) {
-                    // Split the sentence
-                    $first_part = array_slice($words, 0, $remaining);
-                    $second_part = array_slice($words, $remaining);
-
-                    $first_line = implode(' ', $first_part);
-                    $second_line = implode(' ', $second_part);
-
-                    if ($has_hash) {
-                        $first_line = '# ' . $first_line;
-                        $second_line = '# ' . $second_line;
+                $remaining = $target_tokens_per_col + 1 - $col_token_counts[$col];
+                if ($remaining > 0 && $remaining < $token_count) {
+                    // Only split if not in the middle of a tag or URL
+                    // Find a safe split point
+                    $split_at = $remaining;
+                    for ($j = $remaining; $j < $token_count; $j++) {
+                        if (
+                            preg_match('/^(https?:\/\/|www\.)/i', $tokens[$j]) ||
+                            preg_match('/^<[^>]+>$/', $tokens[$j])
+                        ) {
+                            // Don't split before/after a URL or tag, move split point after this token
+                            $split_at = $j + 1;
+                        } else {
+                            break;
+                        }
                     }
+                    // If split_at is still less than token_count, split
+                    if ($split_at < $token_count) {
+                        $first_part = array_slice($tokens, 0, $split_at);
+                        $second_part = array_slice($tokens, $split_at);
 
-                    $columns[$col] .= ($columns[$col] !== '' ? "\n" : '') . $first_line;
-                    $col_word_counts[$col] += count($first_part);
+                        $first_line = implode(' ', $first_part);
+                        $second_line = implode(' ', $second_part);
 
-                    $col++;
-                    $columns[$col] .= ($columns[$col] !== '' ? "\n" : '') . $second_line;
-                    $col_word_counts[$col] += count($second_part);
-                    continue;
+                        if ($has_hash) {
+                            $first_line = '# ' . $first_line;
+                            $second_line = '# ' . $second_line;
+                        }
+
+                        $columns[$col][] = $first_line;
+                        $col_token_counts[$col] += count($first_part);
+
+                        $col++;
+                        $columns[$col][] = $second_line;
+                        $col_token_counts[$col] += count($second_part);
+                        continue 2;
+                    }
                 }
-            }
-
-            // If current column is over target, move to next
-            if (
-                $col < $num_columns - 1 &&
-                $col_word_counts[$col] + $sentence_word_count > $target_words_per_col
-            ) {
+                // If can't split, move to next column
                 $col++;
             }
 
-            $line = implode(' ', $words);
+            $line = implode(' ', $tokens);
             if ($has_hash) {
                 $line = '# ' . $line;
             }
-            $columns[$col] .= ($columns[$col] !== '' ? "\n" : '') . $line;
-            $col_word_counts[$col] += $sentence_word_count;
+            $columns[$col][] = $line;
+            $col_token_counts[$col] += $token_count;
         }
 
         // If the last column(s) are empty, fallback to even split by lines
         $empty_cols = 0;
         foreach ($columns as $c) {
-            if (trim($c) === '') $empty_cols++;
+            if (empty($c)) $empty_cols++;
         }
         if ($empty_cols > 0) {
             // Fallback: split sentences evenly by line count
             $lines_per_col = ceil(count($sentences) / $num_columns);
-            $columns = array_fill(0, $num_columns, '');
+            $columns = array_fill(0, $num_columns, []);
             foreach ($sentences as $i => $sentence) {
                 $col = floor($i / $lines_per_col);
                 if ($col >= $num_columns) $col = $num_columns - 1;
-                $columns[$col] .= ($columns[$col] !== '' ? "\n" : '') . $sentence;
+                $columns[$col][] = $sentence;
             }
         }
 
         // Output columns, wrap each in <p>
         $output = '';
         foreach ($columns as $colContent) {
-            $colContent = trim($colContent);
-            $output .= '<div class="col">' . $colContent . '</div>';
+            $colContent = array_map('trim', $colContent);
+            $colContent = array_filter($colContent, function($s) { return $s !== ''; });
+            $output .= '<div class="col">' . implode("\n", $colContent) . '</div>';
         }
         return $output;
     }
@@ -311,7 +325,7 @@
                 return '
                 <section class="'.htmlspecialchars($class ?? '').'">
                     <div class="layout">
-                        <div class="column has-media">
+                        <div class="column has-media' . (!empty($args['has_face']) ? ' has-face' : '') . '">
                             <img class="object-fit-cover w-100 h-100" loading="lazy" src="' . htmlspecialchars($args['image'] ?? '') . '" alt="' . htmlspecialchars($args['image_alt'] ?? '') . '" />
                             <figcaption title="' . htmlspecialchars($args['image_credit'] ?? '') . '" class="credit">' . htmlspecialchars($args['image_credit'] ?? '') . '</figcaption>
                         </div>
@@ -321,7 +335,7 @@
                 return '
                 <section class="'.htmlspecialchars($class ?? '').'">
                     <div class="layout">
-                        <div class="column has-media">
+                        <div class="column has-media' . (!empty($args['has_face']) ? ' has-face' : '') . '">
                             <img class="object-fit-cover w-100 h-100" loading="lazy" src="' . htmlspecialchars($args['image'] ?? '') . '" alt="' . htmlspecialchars($args['image_alt'] ?? '') . '" />
                             <figcaption title="' . htmlspecialchars($args['image_credit'] ?? '') . '" class="credit">' . htmlspecialchars($args['image_credit'] ?? '') . '</figcaption>
                         </div>
@@ -353,7 +367,7 @@
                                 ' . format_content( split_content_columns(($args['content'] ?? ''), 2) ). '
                             </div>
                         </div>
-                        <div class="column has-media">
+                        <div class="column has-media' . (!empty($args['has_face']) ? ' has-face' : '') . '">
                             <img class="object-fit-cover w-100 h-100" loading="lazy" src="' . htmlspecialchars($args['image'] ?? '') . '" alt="' . htmlspecialchars($args['image_alt'] ?? '') . '" />
                             <figcaption title="' . htmlspecialchars($args['image_credit'] ?? '') . '" class="credit">' . htmlspecialchars($args['image_credit'] ?? '') . '</figcaption>
                         </div>

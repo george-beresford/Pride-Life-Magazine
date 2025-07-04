@@ -4,19 +4,19 @@
     $config = [
         'language' => 'en',
         'url' => [
-            'protocol'          => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://',
-            'domain'            => $_SERVER['HTTP_HOST'].'/pride-life-magazine',
+            'protocol'          => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://',
+            'domain'            => (isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1')) ? 'localhost' : $_SERVER['HTTP_HOST'],
             'page'              => get_current_page(),
         ],
         'meta' => [
             'charset'           => 'UTF-8',
-            'viewport'          => 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+            'viewport'          => 'width=device-width, initial-scale=1.0',
             'X-UA-Compatible'   => 'ie=edge',
             'description'       => 'Billy Porter reflects on Pride, sharing the bitter and the sweet moments, and discusses his stunning new play in this exclusive feature.',
             'author'            => 'George Beresford Design',
         ],
         'favicons' => [
-            'favicon'           => 'assets/seo/favicon.ico',
+            'favicon'           => '/assets/seo/favicon.ico',
             'favicon_16x16'     => '/assets/seo/favicon-16x16.png',
             'favicon_32x32'     => '/assets/seo/favicon-32x32.png',
             'apple_touch_icon'  => '/assets/seo/apple-touch-icon.png',
@@ -34,45 +34,56 @@
         'open_graph' => [
             'title'             => '',
             'description'       => '',
-            'image'             => '/assets/seo/og-image.jpg',
+            'image'             => '/assets/seo/og-image.jpg?v=2.1',
             'url'               => 'https://example.com',
             'type'              => 'website',
         ],
         'twitter' => [
             'card'              => 'summary_large_image',
             'site'              => '@defaultsite',
-            'creator'           => '@defaultcreator',
+            'creator'           => '@pridelife',
             'title'             => '',
             'description'       => '',
-            'image'             => '/assets/seo/twitter-card.jpg',
+            'image'             => '/assets/seo/twitter-card.jpg?v=2.1',
         ]
     ];
     // Set defaults and duplicates after defining array
     $config['title']['formatted']           = get_page_title($config['title']['separator'], 'left');
     $config['open_graph']['title']          = get_page_title($config['title']['separator'], 'left');
     $config['open_graph']['description']    = $config['meta']['description'];
-    $config['open_graph']['url']            = get_site_url().$config['url']['page'];
+    $config['open_graph']['url']            = get_site_url();
     $config['twitter']['title']             = get_page_title($config['title']['separator'], 'left');
     $config['twitter']['description']       = $config['meta']['description'];
+    
+    // Enforce asset URLs to full URLs
+    $config['favicons']['favicon']           = get_site_url() . '/assets/seo/favicon.ico';
+    $config['favicons']['favicon_16x16']     = get_site_url() . '/assets/seo/favicon-16x16.png';
+    $config['favicons']['favicon_32x32']     = get_site_url() . '/assets/seo/favicon-32x32.png';
+    $config['favicons']['apple_touch_icon']  = get_site_url() . '/assets/seo/apple-touch-icon.png';
+    $config['favicons']['mask_icon']         = get_site_url() . '/assets/seo/safari-pinned-tab.svg';
+    $config['open_graph']['image']           = get_site_url() . '/assets/seo/og-image.jpg';
+    $config['twitter']['image']              = get_site_url() . '/assets/seo/twitter-card.jpg';
+
 
     // Define localbusiness @schema details
     $schema = [
-        'telephone' => '+1 555-123-4567',
-        'email' => 'info@example.com',
+        'telephone' => '+44 (0)7919 473 473',
+        'email' => 'info@pridelifeglobal.com',
 
         'openingHours' => [
-            'Mo-Fr 09:00-18:00',
-            'Sa 10:00-14:00',
+            'Mo-Fr 09:00-17:00',
+            'Sa 09:00-17:00',
         ],
         
-        'streetAddress' => '123 Main Street',
-        'addressLocality' => 'Anytown',
-        'addressRegion' => 'State',
-        'postalCode' => '12345',
-        'addressCountry' => 'US',
+        'streetAddress' => '204, 58 Peregrine Road',
+        'addressLocality' => 'Hainault, Ilford',
+        'addressRegion' => 'Essex',
+        'postalCode' => 'IG6 3SZ',
+        'addressCountry' => 'GB',
+        'registeredOffice' => '204, 58 Peregrine Road, Hainault, Ilford, Essex IG6 3SZ',
 
-        'latitude' => 40.712776,
-        'longitude' => -74.005974
+        'latitude' => 51.6109663,
+        'longitude' => 0.12527
     ];
 
     // Define social media profile URLs
@@ -90,8 +101,8 @@
         global $config;
 
         $metaTags = '<title>'.htmlspecialchars($config['title']['formatted'] ?? '').'</title>'.PHP_EOL;
-        $metaTags .= '<link rel="canonical" href="'.htmlspecialchars($config['url']['protocol'].$config['url']['domain'].'/'.$config['url']['page']).'">'.PHP_EOL;
-        $metaTags .= '<link rel="alternate" href="'.htmlspecialchars($config['url']['protocol'].$config['url']['domain'].'/'.$config['url']['page']).'" hreflang="en">'.PHP_EOL;
+        $metaTags .= '<link rel="canonical" href="'.htmlspecialchars($config['url']['protocol'].$config['url']['domain']).'">'.PHP_EOL;
+        $metaTags .= '<link rel="alternate" href="'.htmlspecialchars($config['url']['protocol'].$config['url']['domain']).'" hreflang="en">'.PHP_EOL;
         
         if(empty($hide_page)) {
             $metaTags .= '<meta name="robots" content="index, follow">'.PHP_EOL;
@@ -235,12 +246,12 @@
             'theme_color' => $config['favicons']['theme_color'],
             'icons' => [
                 [
-                    'src' => '/assets/seo/android-chrome-192x192.png',
+                    'src' => '/issue38/assets/seo/android-chrome-192x192.png',
                     'sizes' => '192x192',
                     'type' => 'image/png'
                 ],
                 [
-                    'src' => '/assets/seo/android-chrome-512x512.png',
+                    'src' => '/issue38/assets/seo/android-chrome-512x512.png',
                     'sizes' => '512x512',
                     'type' => 'image/png'
                 ]
