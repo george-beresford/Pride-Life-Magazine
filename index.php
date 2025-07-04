@@ -72,7 +72,7 @@
                 <!-- Your browser does not support the video tag. -->
             </video> */ ?>
 
-            <img class="object-fit-cover w-100" src="<?= get_site_url(); ?>/assets/img/front-cover/Billy-Porter-by-Meredith-Truax.webp" alt="Billy Porter by Meredith Truax" />
+            <img class="object-fit-cover w-100" loading="lazy" src="<?= get_site_url(); ?>/assets/img/front-cover/Billy-Porter-by-Meredith-Truax.webp" alt="Billy Porter by Meredith Truax" />
         </div>
         <div class="container h-100 align-content-center">
             <div class="row">
