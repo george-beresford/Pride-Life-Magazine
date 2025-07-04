@@ -192,7 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
      * Updates active/enter/exit classes for sections and nav dots.
      * Also updates nested scroll-snap-x if present in active scroll-snap-y section.
      */
-    function updateActiveStates(sections, dots, activeIndex) {
+    function updateActiveStates(sections, dots, activeIndex, _recursionGuard = new WeakSet()) {
+        // Recursion guard: prevent infinite loops on nested calls
+        if (_recursionGuard.has(sections)) return;
+        _recursionGuard.add(sections);
+
         // Remove all classes
         sections.forEach(section => {
             section.classList.remove('active', 'active-x', 'active-y', 'is-entering', 'is-exiting');
@@ -241,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     nestedSections.forEach((section, index) => {
                         if (section.classList.contains('active')) activeNestedIndex = index;
                     });
-                    updateActiveStates(nestedSections, nestedDots, activeNestedIndex);
+                    updateActiveStates(nestedSections, nestedDots, activeNestedIndex, _recursionGuard);
                 }
             }
         }
@@ -566,19 +570,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Initialize navigation ---
     setupKeyboardNavigation();
     createScrollNavigation();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     
