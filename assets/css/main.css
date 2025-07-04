@@ -470,6 +470,7 @@ section {
     }
 
     & a {
+        word-break: break-all !important;
         color: var(--accent) !important;
     }
 
@@ -605,6 +606,10 @@ section.advert {
 footer {
     background: var(--black);
     color: var(--white);
+
+    & > .layout:not(.has-media) > .column:first-child {
+        padding-top: calc((var(--padding) * 1.5) + var(--logo-height)) !important;
+    }
 }
 footer a {
     color: var(--white);
