@@ -1,11 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    function setVH() {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    window.addEventListener('resize', setVH);
-    setVH();
-
     // Debounce limit in ms for resize event handler
     const debounceLimit = 100; // recalculate repaints every 100ms
 
@@ -18,6 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
 
+    function setVH() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    const debouncedSetVH = debounce(setVH, debounceLimit);
+    window.addEventListener('resize', debouncedSetVH);
+    setVH();
     
     // Toggle the navigation menu open/close
     const toggleMenu = (trigger) => {
@@ -396,11 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let isScrolling = false;
         const dots = navContainer.querySelectorAll('.scroll-nav-dot');
 
-        container.addEventListener('scroll', () => {
-            if (!isScrolling) isScrolling = true;
-            currentActiveIndex = handleScrollProgress(container, sections, currentActiveIndex, dots, navContainer);
-        });
-
+        // Debounced scroll handler for all scroll events
         const debouncedScrollHandler = debounce(() => {
             isScrolling = false;
             const activeIndex = calculateMostVisibleSection(container, sections);
@@ -409,7 +405,11 @@ document.addEventListener("DOMContentLoaded", () => {
             currentActiveIndex = activeIndex;
         }, debounceLimit);
 
-        container.addEventListener('scroll', debouncedScrollHandler);
+        container.addEventListener('scroll', () => {
+            if (!isScrolling) isScrolling = true;
+            currentActiveIndex = handleScrollProgress(container, sections, currentActiveIndex, dots, navContainer);
+            debouncedScrollHandler();
+        });
     }
 
     /**
