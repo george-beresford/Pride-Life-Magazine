@@ -1,6 +1,6 @@
-@import url('/assets/css/reset.css');
-@import url('/assets/css/bootstrap-utilities.min.css');
-@import url('/assets/css/bootstrap-grid.min.css');
+@import url('/issue38/assets/css/reset.css');
+@import url('/issue38/assets/css/bootstrap-utilities.min.css');
+@import url('/issue38/assets/css/bootstrap-grid.min.css');
 @import url("https://use.typekit.net/rry7akh.css");
 
 :root {
@@ -192,8 +192,10 @@ figcaption.credit {
     figcaption.credit {
         max-width: calc(100% - (var(--padding) * 3)) !important;
     }
-    .layout > .column.has-media:last-child {
+    .layout > .column.has-media:last-child,
+    .background {
         figcaption.credit {
+            left: var(--padding) !important;
             bottom: calc(var(--padding) * 2) !important;
         }
     }
@@ -1463,7 +1465,7 @@ section.is-exiting > .layout .column {
             }
             &:nth-last-of-type(1) {
                 padding-top: var(--padding) !important;
-                padding-bottom: var(--padding) !important;
+                padding-bottom: calc((var(--padding) * 2)) !important;
             }
         }
         &.has-media {
